@@ -254,7 +254,15 @@ public class World extends BasicGameState {
 			if(isAttacking){
 				g.drawAnimation(strike[1],player.getXPos()+player.width(), player.getYPos());
 			}
-			
+			Polygon poly = new Polygon();
+			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()-40);
+			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height()-40);
+			g.draw(poly);
 			//g.drawImage(player.getImage(), player.getXPos(), player.getYPos());
 			
 			
@@ -332,8 +340,8 @@ public class World extends BasicGameState {
     	}
     	
     	if (charging && swordCooldown == 0) {
-    		Image chargingPic = new Image("resources/charging.png");
-    		g.drawImage(chargingPic, playerPos.xPos()+2, playerPos.yPos()+2);
+    		//Image chargingPic = new Image("resources/charging.png");
+    		//g.drawImage(chargingPic, playerPos.xPos()+2, playerPos.yPos()+2);
     		chargeTime++;
     	}
     	
@@ -406,19 +414,19 @@ public class World extends BasicGameState {
 			currentAnim=facing[direction];
     	
 			if(keyUp){
-				moveY=moveY-SPEED;
+				moveY=moveY-1;
 			}
     	
 			if(keyDown){
-				moveY=moveY+SPEED;
+				moveY=moveY+1;
 			}
     	
 			if(keyLeft){
-				moveX=moveX-SPEED;
+				moveX=moveX-1;
 			}
 		
 			if(keyRight){
-				moveX=moveX+SPEED;
+				moveX=moveX+1;
 			}
 			
 			if(moveY>0 && moveX==0){
@@ -600,41 +608,60 @@ public class World extends BasicGameState {
 			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+player.height());
 			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+player.height()+40);
 			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height()+40);
+			hitbox=poly;
 		}
 		else if (direction == 2) {
 			x = player.getXPos()+player.width();
 			y = player.getYPos();
-			//hitbox = new Rectangle(x, y, 40, 60);
+			hitbox = new Rectangle(x, y, 40, 60);
 		}
 		else if (direction == 3) {
-			x = player.getXPos()+25;
-			y = player.getYPos()-60;
-			//hitbox = new Rectangle(x, y, width, height);
+			Polygon poly = new Polygon();
+			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()-40);
+			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height()-40);
+			hitbox=poly;
 		}
 		else if (direction == 4) {
-			x = player.getXPos()+25;
-			y = player.getYPos()-60;
-			//hitbox = new Rectangle(x, y, width, height);
+			x = player.getXPos()-10;
+			y = player.getYPos()-40;
+			hitbox = new Rectangle(x, y, 60, 40);
 		}
 		else if (direction == 5) {
-			x = player.getXPos()+25;
-			y = player.getYPos()-60;
-			//hitbox = new Rectangle(x, y, width, height);
+			Polygon poly = new Polygon();
+			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+player.height());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+player.height());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+player.height()+40);
+			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height()+40);
+			hitbox=poly;
 		}
 		else if (direction == 6) {
 			x = player.getXPos()+25;
 			y = player.getYPos()-60;
-			//hitbox = new Rectangle(x, y, width, height);
+			hitbox = new Rectangle(x, y, 40, 60);
 		}
-		else if (direction == 7) {
-			x = player.getXPos()+25;
-			y = player.getYPos()-60;
-			//hitbox = new Rectangle(x, y, width, height);
+		else{
+			Polygon poly = new Polygon();
+			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+player.height());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+player.height());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+player.height()+40);
+			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height()+40);
+			hitbox=poly;
 		}
 		
 		//g.drawImage(meleePic[direction], x, y);
 		
-		//checkHit(hitbox, ATKDMG, g);
+		checkHit(hitbox, ATKDMG, g);
 	}
 	
 	private void sendProjectile(Image image, int speed, int damage) {
@@ -646,11 +673,11 @@ public class World extends BasicGameState {
 			x = player.getXPos()+12;
 			y = player.getYPos()+PHEIGHT;
 		}
-		else if (direction == 1) {
+		else if (direction == 2) {
 			x = player.getXPos()+PWIDTH;
 		    y = player.getYPos()+17;
 		}
-		else if (direction == 2) {
+		else if (direction == 4) {
 			image.rotate(270f);
 			x = player.getXPos()+12;
 			y = player.getYPos()-10;
