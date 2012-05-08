@@ -62,6 +62,8 @@ public class World extends BasicGameState {
 	
 	private Position playerPos = new Position(200,200);
 	
+	private Shape hitBoxTest;
+	
 	
 	private static float SPEED2 = 6;
 	private boolean keyA;
@@ -237,6 +239,7 @@ public class World extends BasicGameState {
 		char1 = char2;
 		bars = new Image("resources/bars.png");
 		
+		
 
 	}
 
@@ -253,16 +256,8 @@ public class World extends BasicGameState {
 			
 			if(isAttacking){
 				g.drawAnimation(strike[1],player.getXPos()+player.width(), player.getYPos());
+				g.fill(hitBoxTest);
 			}
-			Polygon poly = new Polygon();
-			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos());
-			poly.addPoint(player.getXPos(),player.getYPos());
-			poly.addPoint(player.getXPos(),player.getYPos()+(player.height()/2));
-			poly.addPoint(player.getXPos()-40,player.getYPos()+(player.height()/2));
-			poly.addPoint(player.getXPos()-40,player.getYPos());
-			poly.addPoint(player.getXPos(),player.getYPos()-40);
-			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()-40);
-			g.draw(poly);
 			//g.drawImage(player.getImage(), player.getXPos(), player.getYPos());
 			
 			
@@ -643,24 +638,24 @@ public class World extends BasicGameState {
 			hitbox=poly;
 		}
 		else if (direction == 6) {
-			x = player.getXPos()+25;
-			y = player.getYPos()-60;
+			x = player.getXPos()-player.width();
+			y = player.getYPos();
 			hitbox = new Rectangle(x, y, 40, 60);
 		}
 		else{
 			Polygon poly = new Polygon();
 			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height());
-			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+player.height());
-			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+(player.height()/2));
-			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+(player.height()/2));
-			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+player.height());
-			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+player.height()+40);
+			poly.addPoint(player.getXPos(),player.getYPos()+player.height());
+			poly.addPoint(player.getXPos(),player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos()-40,player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos()-40,player.getYPos()+player.height());
+			poly.addPoint(player.getXPos(),player.getYPos()+player.height()+40);
 			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height()+40);
 			hitbox=poly;
 		}
 		
 		//g.drawImage(meleePic[direction], x, y);
-		
+		hitBoxTest = hitbox;
 		checkHit(hitbox, ATKDMG, g);
 	}
 	
