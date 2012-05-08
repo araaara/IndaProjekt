@@ -11,6 +11,8 @@ public class Credits extends BasicGameState {
 	private static final int ID = 3;
 	
 	private StateBasedGame game;
+	
+	
 
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
@@ -37,5 +39,7 @@ public class Credits extends BasicGameState {
 	public int getID() {
 		return ID;
 	}
+	
+	
 
 }

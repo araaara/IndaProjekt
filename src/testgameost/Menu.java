@@ -25,12 +25,12 @@ public class Menu extends BasicGameState {
 	private int selectedOption;
 	private String[] options={"New Game","Credits","Controls"};
 	
-	private StateBasedGame game;
+	
+	
 	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		this.game = game;
 		selectedOption=0;
 		keyUpCoolDown=0;
 		keyDownCoolDown=0;
@@ -87,8 +87,13 @@ public class Menu extends BasicGameState {
 		
 		coolDown();
 		
-		if(keySelectOption&&selectedOption==0){
-			game.enterState(WORLDID);
+		if(keySelectOption){
+			if(selectedOption==0){
+				game.enterState(WORLDID);
+			}
+			if(selectedOption==2){
+				
+			}
 		}
 
 	}
@@ -106,5 +111,6 @@ public class Menu extends BasicGameState {
 			keyDownCoolDown--;
 		}
 	}
+	
 
 }
