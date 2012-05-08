@@ -51,10 +51,11 @@ public abstract class Creature {
 		return maxMp;
 	}
 	
-	public void changeHp(int hp){
+	public void changeHp(int hp, Map map){
 		this.hitpoints = this.hitpoints + hp;
 		if(this.hitpoints<0){
 			this.hitpoints = 0;
+			die(map);
 		}
 		if(this.hitpoints>maxHp){
 			this.hitpoints = maxHp;
@@ -115,7 +116,7 @@ public abstract class Creature {
 
 	
 	public Rectangle getHitbox() {
-		return new Rectangle(pos.xPos(), pos.yPos(), 50, 50);
+		return new Rectangle(pos.xPos(), pos.yPos(), width(), height());
 	}
 	
 	public String getImagePath() {
@@ -124,9 +125,7 @@ public abstract class Creature {
 	
 	public void loseHitpoints(int damage, Map map) {
 		hitpoints = hitpoints-damage;
-		if (hitpoints <= 0) {
-			die(map);
-		}
+		
 	}
 	
 	public boolean getIsHit() {

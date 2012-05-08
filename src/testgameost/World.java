@@ -14,6 +14,8 @@ import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Polygon;
 
 import playernshit.Fireball;
 import playernshit.Projectile;
@@ -34,6 +36,7 @@ public class World extends BasicGameState {
 	private Animation currentAnim;
 	private Animation[] walking;
 	private Animation[] swordAttack;
+	private Animation[] strike;
 	
 	private static final int PWIDTH = 40;
 	private static final int PHEIGHT = 60;
@@ -117,9 +120,10 @@ public class World extends BasicGameState {
 		char1 = char2;
 		bars = new Image("resources/bars.png");
 		
-		walking = new Animation[4];
-		facing = new Animation[4];
-		swordAttack = new Animation[4];
+		walking = new Animation[8];
+		facing = new Animation[8];
+		swordAttack = new Animation[8];
+		strike = new Animation[8];
 		Image[] wDown = {char2,new Image("resources/guy2_2.png"), char2,new Image("resources/guy2_3.png")};
 		Image[] wRight = {new Image("resources/guy2_fr.png"), new Image("resources/guy2_fr_2.png"), 
 				new Image("resources/guy2_fr.png"),new Image("resources/guy2_fr_3.png")};
@@ -131,25 +135,52 @@ public class World extends BasicGameState {
 		Image[] fDown = {char2};
 		Image[] fRight = {new Image("resources/guy2_fr.png")};
 		Image[] fLeft = {new Image("resources/guy2_fl.png")};
-		Image[] fUp = {new Image("resources/guy2_fl.png")};
+		Image[] fUp = {new Image("resources/guy2_b.png")};
 		
 		Image[] swordAttackRight = {new Image("resources/guy2_fr_sw.png"), new Image("resources/guy2_fr_sw_2.png"),
 				new Image("resources/guy2_fr_sw_3.png"), new Image("resources/guy2_fr_sw.png")};
 		
+		Image[] strikeRight = {new Image("resources/strike.png")};
+		
 		facing[0] = new Animation(fDown,1);
-		facing[1] = new Animation(fRight,1);
-		facing[2] = new Animation(fUp,1);
-		facing[3] = new Animation(fLeft,1);
+		facing[1] = new Animation(fDown,1);
+		facing[2] = new Animation(fRight,1);
+		facing[3] = new Animation(fUp,1);
+		facing[4] = new Animation(fUp,1);
+		facing[5] = new Animation(fUp,1);
+		facing[6] = new Animation(fLeft,1);
+		facing[7] = new Animation(fDown,1);
+		
 		
 		walking[0] = new Animation(wDown,180);
-		walking[1] = new Animation(wRight,180);
-		walking[2] = new Animation(wUp, 180);
-		walking[3] = new Animation(wLeft,180);
+		walking[1] = new Animation(wDown,180);
+		walking[2] = new Animation(wRight, 180);
+		walking[3] = new Animation(wUp,180);
+		walking[4] = new Animation(wUp,180);
+		walking[5] = new Animation(wUp,180);
+		walking[6] = new Animation(wLeft, 180);
+		walking[7] = new Animation(wDown,180);
 		
 		swordAttack[0] = new Animation(swordAttackRight,180);
 		swordAttack[1] = new Animation(swordAttackRight,180);
 		swordAttack[2] = new Animation(swordAttackRight,180);
 		swordAttack[3] = new Animation(swordAttackRight,180);
+		swordAttack[4] = new Animation(swordAttackRight,180);
+		swordAttack[5] = new Animation(swordAttackRight,180);
+		swordAttack[6] = new Animation(swordAttackRight,180);
+		swordAttack[7] = new Animation(swordAttackRight,180);
+		
+		swordAttack[0].stopAt(3);
+		swordAttack[1].stopAt(3);
+		swordAttack[2].stopAt(3);
+		swordAttack[3].stopAt(3);
+		swordAttack[4].stopAt(3);
+		swordAttack[5].stopAt(3);
+		swordAttack[6].stopAt(3);
+		swordAttack[7].stopAt(3);
+		
+		
+		strike[1] = new Animation(strikeRight,180);
 		
 		currentAnim = facing[0];
 		
@@ -219,6 +250,10 @@ public class World extends BasicGameState {
 		}
 		if(player.alive()){
 			g.drawAnimation(currentAnim, player.getXPos(), player.getYPos());
+			
+			if(isAttacking){
+				g.drawAnimation(strike[1],player.getXPos()+player.width(), player.getYPos());
+			}
 			
 			//g.drawImage(player.getImage(), player.getXPos(), player.getYPos());
 			
@@ -367,41 +402,55 @@ public class World extends BasicGameState {
 			
 			float moveX=0;
 			float moveY=0;
+			
+			currentAnim=facing[direction];
     	
 			if(keyUp){
 				moveY=moveY-SPEED;
-				direction = 2;
 			}
     	
 			if(keyDown){
 				moveY=moveY+SPEED;
-				direction = 0;
 			}
     	
 			if(keyLeft){
 				moveX=moveX-SPEED;
-				direction = 3;
 			}
 		
 			if(keyRight){
 				moveX=moveX+SPEED;
+			}
+			
+			if(moveY>0 && moveX==0){
+				direction = 0;
+			}
+			else if(moveY>0 && moveX>0){
 				direction = 1;
 			}
-    	
+			else if(moveY==0 && moveX>0){
+				direction = 2;
+			}
+			else if(moveY<0 && moveX>0){
+				direction = 3;
+			}
+			else if(moveY<0 && moveX==0){
+				direction = 4;
+			}
+			else if(moveY<0 && moveX<0){
+				direction = 5;
+			}
+			else if(moveY==0 && moveX<0){
+				direction = 6;
+			}
+			else if(moveY>0 && moveX<0){
+				direction = 7;
+			}
+			
 			if(moveX==0 && moveY==0){
-				currentAnim=facing[0];
+				currentAnim=facing[direction];
 			}
-			else if(moveY>0){
-				currentAnim = walking[0];
-			}
-			else if(moveY<0){
-				currentAnim = walking[2];
-			}
-			else if(moveX>0){
-				currentAnim = walking[1];
-			}
-			else if(moveX<0){
-				currentAnim = walking[3];
+			else{
+				currentAnim=walking[direction];
 			}
     		player.move(moveX, moveY, currentMap);
         	Exit exit = currentMap.checkExits(player.getPosition());
@@ -431,7 +480,7 @@ public class World extends BasicGameState {
     	}
     	
     	if(keyTakeDmg){
-    		player.changeHp(-1);
+    		player.changeHp(-1, currentMap);
     	}
 
 	}
@@ -530,36 +579,62 @@ public class World extends BasicGameState {
 	
 	
 	private void attackMelee(Graphics g) {
-		Rectangle hitbox;
+		Shape hitbox;
 		int direction = getDirection();
-		int height = meleePic[direction].getHeight();
-		int width = meleePic[direction].getWidth();
+		//int height = meleePic[direction].getHeight();
+		//int width = meleePic[direction].getWidth();
+		
 		float x;
 		float y;
 		if (direction == 0) {
-			x = player.getXPos()+10;
-			y = player.getYPos()+PHEIGHT;
-			hitbox = new Rectangle(x, y, width, height);
+			x = player.getXPos()-10;
+			y = player.getYPos()+player.height();
+			hitbox = new Rectangle(x, y, 60, 40);
 		}
 		else if (direction == 1) {
-			x = player.getXPos()+PWIDTH;
-			y = player.getYPos()+25;
-			hitbox = new Rectangle(x, y, width, height);
+			Polygon poly = new Polygon();
+			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+player.height());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+player.height());
+			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+player.height()+40);
+			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height()+40);
 		}
 		else if (direction == 2) {
+			x = player.getXPos()+player.width();
+			y = player.getYPos();
+			//hitbox = new Rectangle(x, y, 40, 60);
+		}
+		else if (direction == 3) {
 			x = player.getXPos()+25;
 			y = player.getYPos()-60;
-			hitbox = new Rectangle(x, y, width, height);
+			//hitbox = new Rectangle(x, y, width, height);
 		}
-		else {
-			x = player.getXPos()-60;
-			y = player.getYPos()+10;
-			hitbox = new Rectangle(x, y, width, height);
+		else if (direction == 4) {
+			x = player.getXPos()+25;
+			y = player.getYPos()-60;
+			//hitbox = new Rectangle(x, y, width, height);
+		}
+		else if (direction == 5) {
+			x = player.getXPos()+25;
+			y = player.getYPos()-60;
+			//hitbox = new Rectangle(x, y, width, height);
+		}
+		else if (direction == 6) {
+			x = player.getXPos()+25;
+			y = player.getYPos()-60;
+			//hitbox = new Rectangle(x, y, width, height);
+		}
+		else if (direction == 7) {
+			x = player.getXPos()+25;
+			y = player.getYPos()-60;
+			//hitbox = new Rectangle(x, y, width, height);
 		}
 		
 		//g.drawImage(meleePic[direction], x, y);
 		
-		checkHit(hitbox, ATKDMG, g);
+		//checkHit(hitbox, ATKDMG, g);
 	}
 	
 	private void sendProjectile(Image image, int speed, int damage) {
@@ -590,7 +665,7 @@ public class World extends BasicGameState {
 		shots.add(shot);
 	}
 	
-	private void checkHit(Rectangle hitbox, int damage, Graphics g) {
+	private void checkHit(Shape hitbox, int damage, Graphics g) {
 		for(Monster m : currentMap.monsters()){
 			if (m!=null){
 				if (hitbox.intersects(m.getHitbox()) && !m.getIsHit()) {
