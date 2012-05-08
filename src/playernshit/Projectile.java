@@ -38,13 +38,13 @@ public class Projectile {
 	    		if (direction == 0) {
 	    			y = y + speed;
 	    		}
-	    		else if (direction == 1) {
+	    		else if (direction == 2) {
 	    			x = x + speed;
 	    		}
-	    		else if (direction == 2) {
+	    		else if (direction == 4) {
 	    			y = y - speed;
 	    		}
-	    		else {
+	    		else if (direction == 6){
 	    			x = x - speed;
 	    		}
 	    	}

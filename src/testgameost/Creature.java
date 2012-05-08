@@ -21,18 +21,18 @@ public abstract class Creature {
 		this.pos = pos;
 		size=new Size(40,60);
 		mp=100;
-		maxHp=100;
+		maxHp=200;
 		maxMp=100;
-		hitpoints = 100;
+		hitpoints = 200;
 	}
 	
 	public Creature(){
 		size=new Size(40,60);
 		mp=100;
-		maxHp=100;
+		maxHp=200;
 		maxMp=100;
 		pos = new Position(130,100);
-		hitpoints = 100;
+		hitpoints = 200;
 	}
 	
 	public int gethp(){
