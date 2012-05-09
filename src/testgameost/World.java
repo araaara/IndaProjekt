@@ -48,6 +48,7 @@ public class World extends BasicGameState {
 	private boolean keySquare;
 	private boolean keyTakeDmg;
 	private boolean keyEsc;
+	private boolean toggleHitBox;
 	
 	private Map map1;
 	private Map map2;
@@ -256,7 +257,10 @@ public class World extends BasicGameState {
 			
 			if(isAttacking){
 				g.drawAnimation(strike[1],player.getXPos()+player.width(), player.getYPos());
-				g.fill(hitBoxTest);
+				if(toggleHitBox){
+					g.fill(hitBoxTest);
+				}
+				
 			}
 			//g.drawImage(player.getImage(), player.getXPos(), player.getYPos());
 			
@@ -388,6 +392,9 @@ public class World extends BasicGameState {
 			throws SlickException {
 		
 		keyEsc = container.getInput().isKeyDown(Input.KEY_ESCAPE);
+		if(container.getInput().isKeyPressed(Input.KEY_H)){
+			toggleHitBox = !toggleHitBox;
+		}
 		if(keyEsc){
 			game.enterState(1);
 		}
