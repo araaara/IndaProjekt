@@ -39,6 +39,7 @@ public class World extends BasicGameState {
 	private Animation[] swordAttack;
 	private Animation[] strike;
 	
+	//PLAYER DIMENSIONS
 	private static final int PWIDTH = 40;
 	private static final int PHEIGHT = 60;
 	
