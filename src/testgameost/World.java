@@ -32,6 +32,7 @@ public class World extends BasicGameState {
 	private Image bars;
 	private Image corpse;
 	
+	//Animationer
 	private Animation[] facing;
 	private Animation currentAnim;
 	private Animation[] walking;
