@@ -43,6 +43,7 @@ public class World extends BasicGameState {
 	private static final int PWIDTH = 40;
 	private static final int PHEIGHT = 60;
 	
+	//Input
 	private boolean keyUp;
 	private boolean keyDown;
 	private boolean keyLeft;
