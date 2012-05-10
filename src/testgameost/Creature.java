@@ -16,7 +16,7 @@ public abstract class Creature {
 	public int hitpoints;
 	protected String imagePath;
 	protected boolean isHit;
-	private float movementSpeed;
+	protected float movementSpeed;
 	
 	
 	public Creature(Position pos){
@@ -123,8 +123,6 @@ public abstract class Creature {
 	public void setMovementSpeed(float newSpeed){
 		movementSpeed = newSpeed;
 	}
-
-
 	
 	public Rectangle getHitbox() {
 		return new Rectangle(pos.xPos(), pos.yPos(), width(), height());

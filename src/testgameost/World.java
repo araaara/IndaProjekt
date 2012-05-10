@@ -230,9 +230,14 @@ public class World extends BasicGameState {
 		addLink(map2,map5,new Position(400,100),100);
 		
 		map3.addMonster(new Monster(), new Position(130,100));
+		Monster m1 = new Monster();
+		m1.setDamage(0);
+		m1.setMovementSpeed(0);
+		map5.addMonster(m1, new Position(130,130));
 		
 		
 		player = new Player(playerPos);
+		player.setMovementSpeed(2);
 		
 		char2 = new Image("resources/char2.png");
 		char3 = new Image("resources/char3.png");
@@ -478,7 +483,7 @@ public class World extends BasicGameState {
     	currentMap.moveMonsters(player, currentMap);
     	for(Monster m : currentMap.monsters()){
     		if(Position.distance(player.getPosition(), m.getPosition())<50 && m.getCooldown()==0 && player.gethp()>0){
-        		player.loseHitpoints(10, currentMap);
+        		player.loseHitpoints(m.getDamage(), currentMap);
         		m.resetCooldown();
         	}
     		m.countCooldown();

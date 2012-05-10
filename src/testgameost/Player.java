@@ -5,7 +5,6 @@ import org.newdawn.slick.SlickException;
 public class Player extends Creature{
 	
 	private boolean alive;
-	private float movementSpeed;
 	
 	public Player(Position Pos)
 		throws SlickException{
@@ -23,13 +22,5 @@ public class Player extends Creature{
 	
 	public boolean alive(){
 		return alive;
-	}
-
-	public float getSpeed(){
-		return movementSpeed;
-	}
-	
-	public void setMovementSpeed(float newSpeed){
-		movementSpeed = newSpeed;
 	}
 }

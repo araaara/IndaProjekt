@@ -6,12 +6,14 @@ import org.newdawn.slick.SlickException;
 public class Monster extends Creature{
 	
 	private int cooldown;
+	private int damage;
 
 
 
 	public Monster()
 			throws SlickException{
 		super();
+		damage = 10;
 		cooldown = 0;
 		imagePath = "resources/monster2.png";
 		isHit = false;
@@ -24,6 +26,13 @@ public class Monster extends Creature{
 		map.removeMonster(this);
 	}
 	
+	public int getDamage(){
+		return damage;
+	}
+	
+	public void setDamage(int newDamage){
+		damage = newDamage;
+	}
 	public int getCooldown(){
 		return cooldown;
 	}
@@ -54,6 +63,6 @@ public class Monster extends Creature{
 		if(player.getYPos()<getYPos()){
 			y=-1;
 		}
-		pos.offsetPos(x, y, map);
+		move(x, y, map);
 	}
 }
