@@ -65,6 +65,7 @@ public class World extends BasicGameState {
 	
 	private Position playerPos = new Position(200,200);
 	
+	//Shape for testing hitboxes
 	private Shape hitBoxTest;
 	
 	
