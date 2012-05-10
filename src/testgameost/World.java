@@ -26,9 +26,7 @@ public class World extends BasicGameState {
 	
 	private static final int ID = 2;
 	
-	private Image char1;
 	private Image char2;
-	private Image char3;
 	private Image bars;
 	private Image corpse;
 	
@@ -63,29 +61,24 @@ public class World extends BasicGameState {
 	private Map currentMap;
 	
 	private static Player player;
-	
-	private static final float SPEED = 2;
+
 	
 	private Position playerPos = new Position(200,200);
 	
 	private Shape hitBoxTest;
 	
 	
-	private static float SPEED2 = 6;
 	private boolean keyA;
 	private boolean key1;
 	private boolean key2;
 	private boolean key3;
 	
 	private int direction = 0;
-	private int direction2 = 0;
 	private int ATKTYPE = 1;
 	private int swordCooldown = 0;
 	
 	private boolean isAttacking = false;
 	
-	private Image[] charPic = new Image[4];
-	private Image[] meleePic = new Image[4];
 	
 	
 
@@ -94,7 +87,6 @@ public class World extends BasicGameState {
 	private static final int PROJECTILESPEED = 14;
 	private static int ATKDMG = 10;
 	
-	private Position2 playerPos2 = new Position2(150,150);
 	
 	private HashSet<Projectile> shots = new HashSet<Projectile>();
 	
@@ -118,8 +110,6 @@ public class World extends BasicGameState {
 		togglePosition = false;
 		
 		char2 = new Image("resources/guy2.png");
-		char3 = new Image("resources/char3.png");
-		char1 = char2;
 		bars = new Image("resources/bars.png");
 		
 		walking = new Animation[8];
@@ -240,8 +230,6 @@ public class World extends BasicGameState {
 		player.setMovementSpeed(2);
 		
 		char2 = new Image("resources/char2.png");
-		char3 = new Image("resources/char3.png");
-		char1 = char2;
 		bars = new Image("resources/bars.png");
 		
 		
@@ -362,17 +350,14 @@ public class World extends BasicGameState {
     	
     	
     	if(key1 && swordCooldown == 0) { //Switch to melee
-    		SPEED2 = 6;
     		ATKTYPE = 1;
     	}
     	
     	if(key2 && swordCooldown == 0) { //Switch to range
-    		SPEED2 = 8;
     		ATKTYPE = 2;
     	}
     	
     	if(key3 && swordCooldown == 0) { //Switch to range
-    		SPEED2 = 10;
     		ATKTYPE = 3;
     	}
     	
@@ -492,10 +477,8 @@ public class World extends BasicGameState {
     	
     	
     	if(keySquare){
-    		char1=char3;
     	}
     	else{
-    		char1=char2;
     	}
     	
     	if(keyTakeDmg){
@@ -542,51 +525,6 @@ public class World extends BasicGameState {
 			
 		}
 	}
-	
-	
-	
-	
-	private class Position2{
-
-    	private float x;
-    	private float y;
-    	
-    	public Position2(float x, float y){
-    		this.x = x;
-    		this.y = y;
-    	}
-    	
-    	public float xPos(){
-    		return x;
-    	}
-    	
-    	public float yPos(){
-    		return y;
-    	}
-    	
-    	public void offsetX(float x, GameContainer container){
-    		
-    		this.x = this.x + x;
-    		
-    		if(this.x+PWIDTH>container.getWidth()){
-    			this.x = container.getWidth()-PWIDTH;
-    		}
-    		if(this.x<0){
-    			this.x = 0;
-    		}
-    	}
-    	public void offsetY(float y, GameContainer container){
-    		
-    		this.y = this.y + y;
-    		
-    		if(this.y+PHEIGHT>container.getHeight()){
-    			this.y = container.getHeight()-PHEIGHT;
-    		}
-    		if(this.y<0){
-    			this.y = 0;
-    		}
-    	}
-    }
 	
 	public int getDirection() {
 		return direction;
