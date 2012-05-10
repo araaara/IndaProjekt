@@ -392,19 +392,19 @@ public class World extends BasicGameState {
 			currentAnim=facing[direction];
     	
 			if(keyUp){
-				moveY=moveY-player.getMovementSpeed();
+				moveY=moveY-1;
 			}
     	
 			if(keyDown){
-				moveY=moveY+player.getMovementSpeed();
+				moveY=moveY+1;
 			}
     	
 			if(keyLeft){
-				moveX=moveX-player.getMovementSpeed();
+				moveX=moveX-1;
 			}
 		
 			if(keyRight){
-				moveX=moveX+player.getMovementSpeed();
+				moveX=moveX+1;
 			}
 			
 			if(moveY>0 && moveX==0){
