@@ -38,8 +38,8 @@ public class World extends BasicGameState {
 	private Animation[] strike;
 	
 	//PLAYER DIMENSIONS
-	private static final int PWIDTH = 40;
-	private static final int PHEIGHT = 60;
+	private static int PWIDTH;
+	private static int PHEIGHT;
 	
 	//Input
 	private boolean keyUp;
@@ -68,7 +68,6 @@ public class World extends BasicGameState {
 	//Shape for testing hitboxes
 	private Shape hitBoxTest;
 	
-	
 	private boolean keyA;
 	private boolean key1;
 	private boolean key2;
@@ -80,12 +79,8 @@ public class World extends BasicGameState {
 	
 	private boolean isAttacking = false;
 	
-	
-	
-
-	
 	private static int ATKSPEED = 60;
-	private static final int PROJECTILESPEED = 10;
+	private static int PROJECTILESPEED = 10;
 	private static int ATKDMG = 10;
 	
 	
@@ -95,12 +90,6 @@ public class World extends BasicGameState {
 	private int chargeTime = 0;
 	
 	private String lastDmg;
-	
-	
-	
-	
-	
-	
 	
 
 	@Override
@@ -233,7 +222,8 @@ public class World extends BasicGameState {
 		char2 = new Image("resources/char2.png");
 		bars = new Image("resources/bars.png");
 		
-		
+		PWIDTH = player.width();
+		PHEIGHT = player.height();
 
 	}
 
@@ -249,13 +239,12 @@ public class World extends BasicGameState {
 			g.drawAnimation(currentAnim, player.getXPos(), player.getYPos());
 			
 			if(isAttacking){
-				g.drawAnimation(strike[1],player.getXPos()+player.width(), player.getYPos());
+				g.drawAnimation(strike[1],player.getXPos()+PWIDTH, player.getYPos());
 				if(toggleHitBox){
 					g.fill(hitBoxTest);
 				}
 				
 			}
-			//g.drawImage(player.getImage(), player.getXPos(), player.getYPos());
 			
 			
 		}
@@ -283,12 +272,6 @@ public class World extends BasicGameState {
 			isAttacking=false;
 		}
     	
-    	
-    	/*
-    	if(swordCooldown > ATKSPEED/3 && ATKTYPE == 1) {
-    		attackMelee(g);
-    	}
-    	*/
     	
     	if(!shots.isEmpty()) {
     		Iterator<Projectile> it = shots.iterator();
@@ -411,19 +394,19 @@ public class World extends BasicGameState {
 			currentAnim=facing[direction];
     	
 			if(keyUp){
-				moveY=moveY-1;
+				moveY=moveY-player.getMovementSpeed();
 			}
     	
 			if(keyDown){
-				moveY=moveY+1;
+				moveY=moveY+player.getMovementSpeed();
 			}
     	
 			if(keyLeft){
-				moveX=moveX-1;
+				moveX=moveX-player.getMovementSpeed();
 			}
 		
 			if(keyRight){
-				moveX=moveX+1;
+				moveX=moveX+player.getMovementSpeed();
 			}
 			
 			if(moveY>0 && moveX==0){
@@ -494,11 +477,11 @@ public class World extends BasicGameState {
 	}
 	
 	public static int getPlayerWidth(){
-		return player.width();
+		return PWIDTH;
 	}
 	
 	public static int getPlayerHeight(){
-		return player.height();
+		return PHEIGHT;
 	}
 	
 	public void setCurrentMap(Map map){
@@ -544,34 +527,34 @@ public class World extends BasicGameState {
 		float y;
 		if (direction == 0) {
 			x = player.getXPos()-10;
-			y = player.getYPos()+player.height();
+			y = player.getYPos()+PHEIGHT;
 			hitbox = new Rectangle(x, y, 60, 40);
 		}
 		else if (direction == 1) {
 			Polygon poly = new Polygon();
-			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height());
-			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+player.height());
-			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+(player.height()/2));
-			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+(player.height()/2));
-			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+player.height());
-			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+player.height()+40);
-			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height()+40);
+			poly.addPoint(player.getXPos()+(PWIDTH/2),player.getYPos()+PHEIGHT);
+			poly.addPoint(player.getXPos()+PWIDTH,player.getYPos()+PHEIGHT);
+			poly.addPoint(player.getXPos()+PWIDTH,player.getYPos()+(PHEIGHT/2));
+			poly.addPoint(player.getXPos()+PWIDTH+40,player.getYPos()+(PHEIGHT/2));
+			poly.addPoint(player.getXPos()+PWIDTH+40,player.getYPos()+PHEIGHT);
+			poly.addPoint(player.getXPos()+PWIDTH,player.getYPos()+PHEIGHT+40);
+			poly.addPoint(player.getXPos()+(PWIDTH/2),player.getYPos()+PHEIGHT+40);
 			hitbox=poly;
 		}
 		else if (direction == 2) {
-			x = player.getXPos()+player.width();
+			x = player.getXPos()+PWIDTH;
 			y = player.getYPos();
 			hitbox = new Rectangle(x, y, 40, 60);
 		}
 		else if (direction == 3) {
 			Polygon poly = new Polygon();
-			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos());
-			poly.addPoint(player.getXPos()+player.width(),player.getYPos());
-			poly.addPoint(player.getXPos()+player.width(),player.getYPos()+(player.height()/2));
-			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos()+(player.height()/2));
-			poly.addPoint(player.getXPos()+player.width()+40,player.getYPos());
-			poly.addPoint(player.getXPos()+player.width(),player.getYPos()-40);
-			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()-40);
+			poly.addPoint(player.getXPos()+(PWIDTH/2),player.getYPos());
+			poly.addPoint(player.getXPos()+PWIDTH,player.getYPos());
+			poly.addPoint(player.getXPos()+PWIDTH,player.getYPos()+(PHEIGHT/2));
+			poly.addPoint(player.getXPos()+PWIDTH+40,player.getYPos()+(PHEIGHT/2));
+			poly.addPoint(player.getXPos()+PWIDTH+40,player.getYPos());
+			poly.addPoint(player.getXPos()+PWIDTH,player.getYPos()-40);
+			poly.addPoint(player.getXPos()+(PWIDTH/2),player.getYPos()-40);
 			hitbox=poly;
 		}
 		else if (direction == 4) {
@@ -581,29 +564,29 @@ public class World extends BasicGameState {
 		}
 		else if (direction == 5) {
 			Polygon poly = new Polygon();
-			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos());
+			poly.addPoint(player.getXPos()+(PWIDTH/2),player.getYPos());
 			poly.addPoint(player.getXPos(),player.getYPos());
-			poly.addPoint(player.getXPos(),player.getYPos()+(player.height()/2));
-			poly.addPoint(player.getXPos()-40,player.getYPos()+(player.height()/2));
+			poly.addPoint(player.getXPos(),player.getYPos()+(PHEIGHT/2));
+			poly.addPoint(player.getXPos()-40,player.getYPos()+(PHEIGHT/2));
 			poly.addPoint(player.getXPos()-40,player.getYPos());
 			poly.addPoint(player.getXPos(),player.getYPos()-40);
-			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()-40);
+			poly.addPoint(player.getXPos()+(PWIDTH/2),player.getYPos()-40);
 			hitbox=poly;
 		}
 		else if (direction == 6) {
-			x = player.getXPos()-player.width();
+			x = player.getXPos()-PWIDTH;
 			y = player.getYPos();
 			hitbox = new Rectangle(x, y, 40, 60);
 		}
 		else{
 			Polygon poly = new Polygon();
-			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height());
-			poly.addPoint(player.getXPos(),player.getYPos()+player.height());
-			poly.addPoint(player.getXPos(),player.getYPos()+(player.height()/2));
-			poly.addPoint(player.getXPos()-40,player.getYPos()+(player.height()/2));
-			poly.addPoint(player.getXPos()-40,player.getYPos()+player.height());
-			poly.addPoint(player.getXPos(),player.getYPos()+player.height()+40);
-			poly.addPoint(player.getXPos()+(player.width()/2),player.getYPos()+player.height()+40);
+			poly.addPoint(player.getXPos()+(PWIDTH/2),player.getYPos()+PHEIGHT);
+			poly.addPoint(player.getXPos(),player.getYPos()+PHEIGHT);
+			poly.addPoint(player.getXPos(),player.getYPos()+(PHEIGHT/2));
+			poly.addPoint(player.getXPos()-40,player.getYPos()+(PHEIGHT/2));
+			poly.addPoint(player.getXPos()-40,player.getYPos()+PHEIGHT);
+			poly.addPoint(player.getXPos(),player.getYPos()+PHEIGHT+40);
+			poly.addPoint(player.getXPos()+(PWIDTH/2),player.getYPos()+PHEIGHT+40);
 			hitbox=poly;
 		}
 		

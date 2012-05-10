@@ -124,6 +124,10 @@ public abstract class Creature {
 		movementSpeed = newSpeed;
 	}
 	
+	public float getMovementSpeed() {
+		return movementSpeed;
+	}
+	
 	public Rectangle getHitbox() {
 		return new Rectangle(pos.xPos(), pos.yPos(), width(), height());
 	}
