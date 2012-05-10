@@ -84,7 +84,7 @@ public class World extends BasicGameState {
 
 	
 	private static int ATKSPEED = 60;
-	private static final int PROJECTILESPEED = 14;
+	private static final int PROJECTILESPEED = 10;
 	private static int ATKDMG = 10;
 	
 	
@@ -538,8 +538,6 @@ public class World extends BasicGameState {
 	private void attackMelee(Graphics g) {
 		Shape hitbox;
 		int direction = getDirection();
-		//int height = meleePic[direction].getHeight();
-		//int width = meleePic[direction].getWidth();
 		
 		float x;
 		float y;
@@ -608,7 +606,6 @@ public class World extends BasicGameState {
 			hitbox=poly;
 		}
 		
-		//g.drawImage(meleePic[direction], x, y);
 		hitBoxTest = hitbox;
 		checkHit(hitbox, ATKDMG, g);
 	}
@@ -619,24 +616,44 @@ public class World extends BasicGameState {
 		int direction = getDirection();
 		if (direction == 0) {
 			image.rotate(90f);
-			x = player.getXPos()+12;
-			y = player.getYPos()+PHEIGHT;
+			x = player.getXPos()+PWIDTH-30;
+			y = player.getYPos()+PHEIGHT-10;
+		}
+		else if (direction == 1) {
+			image.rotate(45f);
+			x = player.getXPos()+PWIDTH-10;
+		    y = player.getYPos()+PHEIGHT-10;
 		}
 		else if (direction == 2) {
 			x = player.getXPos()+PWIDTH;
-		    y = player.getYPos()+17;
+		    y = player.getYPos()+PHEIGHT-30;
+		}
+		else if (direction == 3) {
+			image.rotate(315f);
+			x = player.getXPos()+PWIDTH-10;
+		    y = player.getYPos()+10;
 		}
 		else if (direction == 4) {
 			image.rotate(270f);
-			x = player.getXPos()+12;
-			y = player.getYPos()-10;
+			x = player.getXPos()+PWIDTH-30;
+			y = player.getYPos()+10;
+		}
+		else if (direction == 5) {
+			image.rotate(225f);
+			x = player.getXPos();
+			y = player.getYPos()+10;
+		}
+		else if (direction == 6){
+			image.rotate(180f);
+			x = player.getXPos();
+			y = player.getYPos()+PHEIGHT-30;
 		}
 		else {
-			image.rotate(180f);
-			x = player.getXPos()-15;
-			y = player.getYPos()+17;
+			image.rotate(135f);
+			x = player.getXPos()-10;
+			y = player.getYPos()+PHEIGHT-10;
 		}
-		
+
 		Projectile shot = new Projectile(x, y, image.getWidth(), image.getHeight(), speed, image, getDirection(), damage);
 		shots.add(shot);
 	}
