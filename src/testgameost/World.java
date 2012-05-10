@@ -30,7 +30,7 @@ public class World extends BasicGameState {
 	private Image bars;
 	private Image corpse;
 	
-	//Animationer
+	//Animations
 	private Animation[] facing;
 	private Animation currentAnim;
 	private Animation[] walking;
@@ -104,23 +104,13 @@ public class World extends BasicGameState {
 		facing = new Animation[8];
 		swordAttack = new Animation[8];
 		strike = new Animation[8];
-		Image[] wDown = {char2,new Image("resources/guy2_2.png"), char2,new Image("resources/guy2_3.png")};
-		Image[] wRight = {new Image("resources/guy2_fr.png"), new Image("resources/guy2_fr_2.png"), 
-				new Image("resources/guy2_fr.png"),new Image("resources/guy2_fr_3.png")};
-		Image[] wLeft = {new Image("resources/guy2_fl.png"), new Image("resources/guy2_fl_2.png"), 
-				new Image("resources/guy2_fl.png"),new Image("resources/guy2_fl_3.png")};
-		Image[] wUp = {new Image("resources/guy2_b.png"), new Image("resources/guy2_b_2.png"),
-				new Image("resources/guy2_b.png"), new Image("resources/guy2_b_3.png"),};
 		
+		
+		//Facing animations
 		Image[] fDown = {char2};
 		Image[] fRight = {new Image("resources/guy2_fr.png")};
 		Image[] fLeft = {new Image("resources/guy2_fl.png")};
 		Image[] fUp = {new Image("resources/guy2_b.png")};
-		
-		Image[] swordAttackRight = {new Image("resources/guy2_fr_sw.png"), new Image("resources/guy2_fr_sw_2.png"),
-				new Image("resources/guy2_fr_sw_3.png"), new Image("resources/guy2_fr_sw.png")};
-		
-		Image[] strikeRight = {new Image("resources/strike.png")};
 		
 		facing[0] = new Animation(fDown,1);
 		facing[1] = new Animation(fDown,1);
@@ -131,6 +121,14 @@ public class World extends BasicGameState {
 		facing[6] = new Animation(fLeft,1);
 		facing[7] = new Animation(fDown,1);
 		
+		//Walking animations
+		Image[] wDown = {char2,new Image("resources/guy2_2.png"), char2,new Image("resources/guy2_3.png")};
+		Image[] wRight = {new Image("resources/guy2_fr.png"), new Image("resources/guy2_fr_2.png"), 
+				new Image("resources/guy2_fr.png"),new Image("resources/guy2_fr_3.png")};
+		Image[] wLeft = {new Image("resources/guy2_fl.png"), new Image("resources/guy2_fl_2.png"), 
+				new Image("resources/guy2_fl.png"),new Image("resources/guy2_fl_3.png")};
+		Image[] wUp = {new Image("resources/guy2_b.png"), new Image("resources/guy2_b_2.png"),
+				new Image("resources/guy2_b.png"), new Image("resources/guy2_b_3.png")};
 		
 		walking[0] = new Animation(wDown,180);
 		walking[1] = new Animation(wDown,180);
@@ -140,6 +138,10 @@ public class World extends BasicGameState {
 		walking[5] = new Animation(wUp,180);
 		walking[6] = new Animation(wLeft, 180);
 		walking[7] = new Animation(wDown,180);
+		
+		//Sword attack animations
+		Image[] swordAttackRight = {new Image("resources/guy2_fr_sw.png"), new Image("resources/guy2_fr_sw_2.png"),
+				new Image("resources/guy2_fr_sw_3.png"), new Image("resources/guy2_fr_sw.png")};
 		
 		swordAttack[0] = new Animation(swordAttackRight,180);
 		swordAttack[1] = new Animation(swordAttackRight,180);
@@ -159,8 +161,31 @@ public class World extends BasicGameState {
 		swordAttack[6].stopAt(3);
 		swordAttack[7].stopAt(3);
 		
+		Image strikeRight = new Image("resources/strike.png");
+		Image strikeUp = strikeRight.copy();
+		Image strikeDown = strikeRight.copy();
+		strikeUp.rotate(-90);
+		strikeDown.rotate(90);
+		Image[] strike0 = {strikeDown};
+		Image[] strike1 = {strikeDown};
+		Image[] strike2 = {strikeRight};
+		Image[] strike3 = {strikeDown};
+		Image[] strike4 = {strikeUp};
+		Image[] strike5 = {strikeUp};
+		Image[] strike6 = {strikeRight.getFlippedCopy(true, false)};
+		Image[] strike7 = {strikeDown};
 		
-		strike[1] = new Animation(strikeRight,180);
+		
+		
+		strike[0] = new Animation(strike0, 180);
+		strike[1] = new Animation(strike1, 180);
+		strike[2] = new Animation(strike2, 180);
+		strike[3] = new Animation(strike3, 180);
+		strike[4] = new Animation(strike4, 180);
+		strike[5] = new Animation(strike5, 180);
+		strike[6] = new Animation(strike6, 180);
+		strike[7] = new Animation(strike7, 180);
+		
 		
 		currentAnim = facing[0];
 		
@@ -233,22 +258,6 @@ public class World extends BasicGameState {
 		for(Position p : currentMap.getCorpses()){
 			g.drawImage(corpse,p.xPos(),p.yPos());
 		}
-		if(player.alive()){
-			g.drawAnimation(currentAnim, player.getXPos(), player.getYPos());
-			
-			if(isAttacking){
-				g.drawAnimation(strike[1],player.getXPos()+PWIDTH, player.getYPos());
-				if(toggleHitBox){
-					g.fill(hitBoxTest);
-				}
-				
-			}
-			
-			
-		}
-		if(togglePosition){
-			g.drawString(player.getPosition().toString(), 10, 10);
-		}
 		for(Monster m : currentMap.monsters()){
 			g.drawImage(m.getImage(), m.getXPos(), m.getYPos());
 			if(swordCooldown>0) {
@@ -261,6 +270,21 @@ public class World extends BasicGameState {
 	    		g.drawString(lastDmg, m.getXPos()+20, m.getYPos()-20);
 	    	}
 		}
+		if(player.alive()){
+			g.drawAnimation(currentAnim, player.getXPos(), player.getYPos());
+			
+			if(isAttacking){
+				drawStrikeAnimation(g);
+				
+				
+			}
+			
+			
+		}
+		if(togglePosition){
+			g.drawString(player.getPosition().toString(), 10, 10);
+		}
+		
 		
 		if(swordCooldown>0) {
 		    swordCooldown--;
@@ -652,6 +676,37 @@ public class World extends BasicGameState {
 			}
 		}
 		
+	}
+	
+	private void drawStrikeAnimation(Graphics g){
+		if (direction == 0) {
+			g.drawAnimation(strike[direction],player.getXPos(), player.getYPos()+PHEIGHT);
+		}
+		else if (direction == 1) {
+			g.drawAnimation(strike[direction],player.getXPos()+PWIDTH, player.getYPos());
+		}
+		else if (direction == 2) {
+			g.drawAnimation(strike[direction],player.getXPos()+PWIDTH, player.getYPos());
+		}
+		else if (direction == 3) {
+			g.drawAnimation(strike[direction],player.getXPos()+PWIDTH, player.getYPos());
+		}
+		else if (direction == 4) {
+			g.drawAnimation(strike[direction],player.getXPos(), player.getYPos()-40);
+		}
+		else if (direction == 5) {
+			g.drawAnimation(strike[direction],player.getXPos()+PWIDTH, player.getYPos());
+		}
+		else if (direction == 6) {
+			g.drawAnimation(strike[direction],player.getXPos()-40, player.getYPos());
+		}
+		else{
+			g.drawAnimation(strike[direction],player.getXPos()+PWIDTH, player.getYPos());
+		}
+		
+		if(toggleHitBox){
+			g.fill(hitBoxTest);
+		}
 	}
 
 }
