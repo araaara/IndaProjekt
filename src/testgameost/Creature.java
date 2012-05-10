@@ -16,6 +16,7 @@ public abstract class Creature {
 	public int hitpoints;
 	protected String imagePath;
 	protected boolean isHit;
+	private float movementSpeed;
 	
 	
 	public Creature(Position pos){
