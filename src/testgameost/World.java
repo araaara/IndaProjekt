@@ -53,6 +53,7 @@ public class World extends BasicGameState {
 	private boolean keyEsc;
 	private boolean toggleHitBox;
 	
+	//Maps
 	private Map map1;
 	private Map map2;
 	private Map map3;
