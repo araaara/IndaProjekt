@@ -164,16 +164,26 @@ public class World extends BasicGameState {
 		Image strikeRight = new Image("resources/strike.png");
 		Image strikeUp = strikeRight.copy();
 		Image strikeDown = strikeRight.copy();
+		Image strike1Img = strikeRight.copy();
+		Image strike3Img = strikeRight.copy();
+		Image strike5Img = strikeRight.copy();
+		Image strike7Img = strikeRight.copy();
+		
 		strikeUp.rotate(-90);
 		strikeDown.rotate(90);
+		strike1Img.rotate(45);
+		strike3Img.rotate(-45);
+		strike5Img.rotate(-135);
+		strike7Img.rotate(135);
+		
 		Image[] strike0 = {strikeDown};
-		Image[] strike1 = {strikeDown};
+		Image[] strike1 = {strike1Img};
 		Image[] strike2 = {strikeRight};
-		Image[] strike3 = {strikeDown};
+		Image[] strike3 = {strike3Img};
 		Image[] strike4 = {strikeUp};
-		Image[] strike5 = {strikeUp};
+		Image[] strike5 = {strike5Img};
 		Image[] strike6 = {strikeRight.getFlippedCopy(true, false)};
-		Image[] strike7 = {strikeDown};
+		Image[] strike7 = {strike7Img};
 		
 		
 		
@@ -680,28 +690,28 @@ public class World extends BasicGameState {
 	
 	private void drawStrikeAnimation(Graphics g){
 		if (direction == 0) {
-			g.drawAnimation(strike[direction],player.getXPos(), player.getYPos()+PHEIGHT);
+			g.drawAnimation(strike[direction],player.getXPos(), player.getYPos()+PHEIGHT-10);
 		}
 		else if (direction == 1) {
-			g.drawAnimation(strike[direction],player.getXPos()+PWIDTH, player.getYPos());
+			g.drawAnimation(strike[direction],player.getXPos()+PWIDTH-5, player.getYPos()+PHEIGHT-20);
 		}
 		else if (direction == 2) {
 			g.drawAnimation(strike[direction],player.getXPos()+PWIDTH, player.getYPos());
 		}
 		else if (direction == 3) {
-			g.drawAnimation(strike[direction],player.getXPos()+PWIDTH, player.getYPos());
+			g.drawAnimation(strike[direction],player.getXPos()+30, player.getYPos()-35);
 		}
 		else if (direction == 4) {
 			g.drawAnimation(strike[direction],player.getXPos(), player.getYPos()-40);
 		}
 		else if (direction == 5) {
-			g.drawAnimation(strike[direction],player.getXPos()+PWIDTH, player.getYPos());
+			g.drawAnimation(strike[direction],player.getXPos()-30, player.getYPos()-30);
 		}
 		else if (direction == 6) {
 			g.drawAnimation(strike[direction],player.getXPos()-40, player.getYPos());
 		}
 		else{
-			g.drawAnimation(strike[direction],player.getXPos()+PWIDTH, player.getYPos());
+			g.drawAnimation(strike[direction],player.getXPos()-25, player.getYPos()+PHEIGHT-20);
 		}
 		
 		if(toggleHitBox){
