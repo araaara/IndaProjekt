@@ -357,7 +357,7 @@ public class World extends BasicGameState {
     		ATKTYPE = 2;
     	}
     	
-    	if(key3 && swordCooldown == 0) { //Switch to range
+    	if(key3 && swordCooldown == 0) { //Switch to spell
     		ATKTYPE = 3;
     	}
     	
