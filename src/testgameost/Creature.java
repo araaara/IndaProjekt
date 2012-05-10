@@ -55,19 +55,19 @@ public abstract class Creature {
 	}
 	
 	public void changeHp(int hp, Map map){
-		this.hitpoints = this.hitpoints + hp;
-		if(this.hitpoints<0){
-			this.hitpoints = 0;
+		hitpoints = hitpoints + hp;
+		if(hitpoints<=0){
+			hitpoints = 0;
 			die(map);
 		}
-		if(this.hitpoints>maxHp){
-			this.hitpoints = maxHp;
+		if(hitpoints>maxHp){
+			hitpoints = maxHp;
 		}
 	}
 	
 	public void changeMp(int mp){
 		this.mp = this.mp + mp;
-		if(this.mp<0){
+		if(this.mp<=0){
 			this.mp = 0;
 		}
 		if(this.mp>maxMp){
@@ -111,10 +111,19 @@ public abstract class Creature {
 	}
 	
 	public void move(float x, float y, Map map){
-		pos.offsetPos(x, y, map);
+		if(x==0 || y==0){
+			pos.offsetPos((x*movementSpeed), (y*movementSpeed), map);
+		}
+		else{
+			float moveX = (float)Math.cos(Math.atan(Math.abs(x)/Math.abs(y)))*movementSpeed;
+			float moveY = (float)Math.sin(Math.atan(Math.abs(x)/Math.abs(y)))*movementSpeed;
+			pos.offsetPos(x*moveX, y*moveY, map);
+		}
 	}
 	
-	
+	public void setMovementSpeed(float newSpeed){
+		movementSpeed = newSpeed;
+	}
 
 
 	
@@ -127,8 +136,7 @@ public abstract class Creature {
 	}
 	
 	public void loseHitpoints(int damage, Map map) {
-		hitpoints = hitpoints-damage;
-		
+		changeHp((-damage),map);
 	}
 	
 	public boolean getIsHit() {

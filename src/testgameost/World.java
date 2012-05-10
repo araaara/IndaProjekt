@@ -52,7 +52,9 @@ public class World extends BasicGameState {
 	private boolean keyTakeDmg;
 	private boolean keyEsc;
 	private boolean toggleHitBox;
+	private boolean togglePosition;
 	
+	//Maps
 	private Map map1;
 	private Map map2;
 	private Map map3;
@@ -111,6 +113,9 @@ public class World extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
+		
+		toggleHitBox = false;
+		togglePosition = false;
 		
 		//charPic[0] = new Image("resources/charfr.png"); //Front
 		//charPic[1] = new Image("resources/charri.png"); //Right
@@ -237,6 +242,7 @@ public class World extends BasicGameState {
 		
 		
 		player = new Player(playerPos);
+		player.setMovementSpeed(2);
 		
 		char2 = new Image("resources/char2.png");
 		char3 = new Image("resources/char3.png");
@@ -269,7 +275,9 @@ public class World extends BasicGameState {
 			
 			
 		}
-		g.drawString(player.getPosition().toString(), 10, 10);
+		if(togglePosition){
+			g.drawString(player.getPosition().toString(), 10, 10);
+		}
 		for(Monster m : currentMap.monsters()){
 			g.drawImage(m.getImage(), m.getXPos(), m.getYPos());
 			if(swordCooldown>0) {
@@ -397,6 +405,9 @@ public class World extends BasicGameState {
 		keyEsc = container.getInput().isKeyDown(Input.KEY_ESCAPE);
 		if(container.getInput().isKeyPressed(Input.KEY_H)){
 			toggleHitBox = !toggleHitBox;
+		}
+		if(container.getInput().isKeyPressed(Input.KEY_J)){
+			togglePosition = !togglePosition;
 		}
 		if(keyEsc){
 			game.enterState(1);
