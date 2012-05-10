@@ -16,7 +16,7 @@ public abstract class Creature {
 	public int hitpoints;
 	protected String imagePath;
 	protected boolean isHit;
-	private float movementSpeed;
+	
 	
 	public Creature(Position pos){
 		this.pos = pos;
@@ -25,7 +25,6 @@ public abstract class Creature {
 		maxHp=200;
 		maxMp=100;
 		hitpoints = 200;
-		movementSpeed = 1;
 	}
 	
 	public Creature(){
@@ -35,7 +34,6 @@ public abstract class Creature {
 		maxMp=100;
 		pos = new Position(130,100);
 		hitpoints = 200;
-		movementSpeed = 1;
 	}
 	
 	public int gethp(){
