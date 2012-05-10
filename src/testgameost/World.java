@@ -63,14 +63,12 @@ public class World extends BasicGameState {
 	
 	private static Player player;
 	
-	private static final float SPEED = 2;
+	private static float SPEED = 2;
 	
 	private Position playerPos = new Position(200,200);
 	
 	private Shape hitBoxTest;
 	
-	
-	private static float SPEED2 = 6;
 	private boolean keyA;
 	private boolean key1;
 	private boolean key2;
@@ -82,15 +80,11 @@ public class World extends BasicGameState {
 	private int swordCooldown = 0;
 	
 	private boolean isAttacking = false;
-	
-	private Image[] charPic = new Image[4];
-	private Image[] meleePic = new Image[4];
-	
-	
+		
 
 	
 	private static int ATKSPEED = 60;
-	private static final int PROJECTILESPEED = 14;
+	private static final int PROJECTILESPEED = 10;
 	private static int ATKDMG = 10;
 	
 	private Position2 playerPos2 = new Position2(150,150);
@@ -112,15 +106,6 @@ public class World extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		
-		//charPic[0] = new Image("resources/charfr.png"); //Front
-		//charPic[1] = new Image("resources/charri.png"); //Right
-		//charPic[2] = new Image("resources/charba.png"); //Back
-		//charPic[3] = new Image("resources/charle.png"); //Left
-		meleePic[0] = new Image("resources/swordfr.png"); //KAN GÖRAS OM, ROTATE N SHIT
-		meleePic[1] = new Image("resources/swordri.png");
-		meleePic[2] = new Image("resources/swordba.png");
-		meleePic[3] = new Image("resources/swordle.png");
 		
 		char2 = new Image("resources/guy2.png");
 		char3 = new Image("resources/char3.png");
@@ -360,17 +345,17 @@ public class World extends BasicGameState {
     	
     	
     	if(key1 && swordCooldown == 0) { //Switch to melee
-    		SPEED2 = 6;
+    		//
     		ATKTYPE = 1;
     	}
     	
     	if(key2 && swordCooldown == 0) { //Switch to range
-    		SPEED2 = 8;
+    		//
     		ATKTYPE = 2;
     	}
     	
-    	if(key3 && swordCooldown == 0) { //Switch to range
-    		SPEED2 = 10;
+    	if(key3 && swordCooldown == 0) { //Switch to spell
+    		//
     		ATKTYPE = 3;
     	}
     	
@@ -420,19 +405,19 @@ public class World extends BasicGameState {
 			currentAnim=facing[direction];
     	
 			if(keyUp){
-				moveY=moveY-1;
+				moveY=moveY-player.getSpeed();
 			}
     	
 			if(keyDown){
-				moveY=moveY+1;
+				moveY=moveY+player.getSpeed();
 			}
     	
 			if(keyLeft){
-				moveX=moveX-1;
+				moveX=moveX-player.getSpeed();
 			}
 		
 			if(keyRight){
-				moveX=moveX+1;
+				moveX=moveX+player.getSpeed();
 			}
 			
 			if(moveY>0 && moveX==0){
@@ -595,8 +580,6 @@ public class World extends BasicGameState {
 	private void attackMelee(Graphics g) {
 		Shape hitbox;
 		int direction = getDirection();
-		//int height = meleePic[direction].getHeight();
-		//int width = meleePic[direction].getWidth();
 		
 		float x;
 		float y;
@@ -665,7 +648,6 @@ public class World extends BasicGameState {
 			hitbox=poly;
 		}
 		
-		//g.drawImage(meleePic[direction], x, y);
 		hitBoxTest = hitbox;
 		checkHit(hitbox, ATKDMG, g);
 	}
@@ -676,22 +658,42 @@ public class World extends BasicGameState {
 		int direction = getDirection();
 		if (direction == 0) {
 			image.rotate(90f);
-			x = player.getXPos()+12;
-			y = player.getYPos()+PHEIGHT;
+			x = player.getXPos()+PWIDTH-30;
+			y = player.getYPos()+PHEIGHT-10;
+		}
+		else if (direction == 1) {
+			image.rotate(45f);
+			x = player.getXPos()+PWIDTH-10;
+		    y = player.getYPos()+PHEIGHT-10;
 		}
 		else if (direction == 2) {
 			x = player.getXPos()+PWIDTH;
-		    y = player.getYPos()+17;
+		    y = player.getYPos()+PHEIGHT-30;
+		}
+		else if (direction == 3) {
+			image.rotate(315f);
+			x = player.getXPos()+PWIDTH-10;
+		    y = player.getYPos()+10;
 		}
 		else if (direction == 4) {
 			image.rotate(270f);
-			x = player.getXPos()+12;
-			y = player.getYPos()-10;
+			x = player.getXPos()+PWIDTH-30;
+			y = player.getYPos()+10;
+		}
+		else if (direction == 5) {
+			image.rotate(225f);
+			x = player.getXPos();
+			y = player.getYPos()+10;
+		}
+		else if (direction == 6){
+			image.rotate(180f);
+			x = player.getXPos();
+			y = player.getYPos()+PHEIGHT-30;
 		}
 		else {
-			image.rotate(180f);
-			x = player.getXPos()-15;
-			y = player.getYPos()+17;
+			image.rotate(135f);
+			x = player.getXPos()-10;
+			y = player.getYPos()+PHEIGHT-10;
 		}
 		
 		Projectile shot = new Projectile(x, y, image.getWidth(), image.getHeight(), speed, image, getDirection(), damage);

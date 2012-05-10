@@ -5,12 +5,14 @@ import org.newdawn.slick.SlickException;
 public class Player extends Creature{
 	
 	private boolean alive;
+	private float movementSpeed;
 	
 	public Player(Position Pos)
 		throws SlickException{
 		super(Pos);
 		image = new Image("resources/char2.png");
 		alive = true;
+		movementSpeed = 4;
 	}
 	
 	@Override
@@ -23,4 +25,7 @@ public class Player extends Creature{
 		return alive;
 	}
 
+	public float getSpeed(){
+		return movementSpeed;
+	}
 }

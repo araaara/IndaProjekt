@@ -13,7 +13,7 @@ public class Projectile {
 	     private int damage;
 	     private int width;
 	     private int height;
-	     
+	     private Double diagonalSpeed;
 	     
 	     public Projectile(float x, float y, int w, int h, int s, Image i, int di, int da) {
 	    	 this.x = x;
@@ -24,6 +24,7 @@ public class Projectile {
 	    	 image = i;
 	    	 direction = di;
 	    	 damage = da;
+	    	 diagonalSpeed = new Double(Math.sqrt((new Integer((speed*speed)/2).doubleValue()))); //Pythagoras sats
 	     }
 	     
 	     	public float xPos(){
@@ -38,14 +39,30 @@ public class Projectile {
 	    		if (direction == 0) {
 	    			y = y + speed;
 	    		}
+	    		else if (direction == 1) {
+	    			x = x + diagonalSpeed.intValue();
+	    			y = y + diagonalSpeed.intValue();
+	    		}
 	    		else if (direction == 2) {
 	    			x = x + speed;
+	    		}
+	    		else if (direction == 3) {
+	    			x = x + diagonalSpeed.intValue();
+	    			y = y - diagonalSpeed.intValue();
 	    		}
 	    		else if (direction == 4) {
 	    			y = y - speed;
 	    		}
+	    		else if (direction == 5) {
+	    			x = x - diagonalSpeed.intValue();
+	    			y = y - diagonalSpeed.intValue();
+	    		}
 	    		else if (direction == 6){
 	    			x = x - speed;
+	    		}
+	    		else if (direction == 7) {
+	    			x = x - diagonalSpeed.intValue();
+	    			y = y + diagonalSpeed.intValue();
 	    		}
 	    	}
 	    	
