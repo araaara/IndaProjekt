@@ -51,6 +51,10 @@ public class World extends BasicGameState {
 	private boolean keyEsc;
 	private boolean toggleHitBox;
 	private boolean togglePosition;
+	private boolean keyA;
+	private boolean key1;
+	private boolean key2;
+	private boolean key3;
 	
 	//Maps
 	private Map map1;
@@ -67,11 +71,6 @@ public class World extends BasicGameState {
 	
 	//Shape for testing hitboxes
 	private Shape hitBoxTest;
-	
-	private boolean keyA;
-	private boolean key1;
-	private boolean key2;
-	private boolean key3;
 	
 	private int direction = 0;
 	private int ATKTYPE = 1;
@@ -91,7 +90,6 @@ public class World extends BasicGameState {
 	
 	private String lastDmg;
 	
-
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
