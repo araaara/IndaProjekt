@@ -28,4 +28,8 @@ public class Player extends Creature{
 	public float getSpeed(){
 		return movementSpeed;
 	}
+	
+	public void setMovementSpeed(float newSpeed){
+		movementSpeed = newSpeed;
+	}
 }
