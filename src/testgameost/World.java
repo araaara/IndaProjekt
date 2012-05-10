@@ -117,15 +117,6 @@ public class World extends BasicGameState {
 		toggleHitBox = false;
 		togglePosition = false;
 		
-		//charPic[0] = new Image("resources/charfr.png"); //Front
-		//charPic[1] = new Image("resources/charri.png"); //Right
-		//charPic[2] = new Image("resources/charba.png"); //Back
-		//charPic[3] = new Image("resources/charle.png"); //Left
-		meleePic[0] = new Image("resources/swordfr.png"); //KAN GÖRAS OM, ROTATE N SHIT
-		meleePic[1] = new Image("resources/swordri.png");
-		meleePic[2] = new Image("resources/swordba.png");
-		meleePic[3] = new Image("resources/swordle.png");
-		
 		char2 = new Image("resources/guy2.png");
 		char3 = new Image("resources/char3.png");
 		char1 = char2;
@@ -242,7 +233,6 @@ public class World extends BasicGameState {
 		
 		
 		player = new Player(playerPos);
-		player.setMovementSpeed(2);
 		
 		char2 = new Image("resources/char2.png");
 		char3 = new Image("resources/char3.png");
