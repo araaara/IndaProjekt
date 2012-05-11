@@ -5,7 +5,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 
-public abstract class Creature {
+public abstract class Creature implements Collidable{
 	
 	protected static Size size;
 	protected Position pos;
@@ -76,10 +76,10 @@ public abstract class Creature {
 		}
 	}
 	
-	public static int width(){
+	public int width(){
 		return size.width();
 	}
-	public static int height(){
+	public int height(){
 		return size.height();
 	}
 	

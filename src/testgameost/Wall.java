@@ -1,6 +1,6 @@
 package testgameost;
 
-public class Wall{
+public class Wall implements Collidable{
 	private Position pos;
 	private int width;
 	private int height;
@@ -11,11 +11,11 @@ public class Wall{
 		this.height = height;
 	}
 	
-	public int getWidth(){
+	public int width(){
 		return width;
 	}
 	
-	public int getHeight(){
+	public int height(){
 		return height;
 	}
 	

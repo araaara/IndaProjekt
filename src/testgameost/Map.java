@@ -28,6 +28,8 @@ public class Map{
 			walls = new HashSet<Wall>();
 			exits = new HashSet<Exit>();
 			this.size = new Size(400,300);
+			monsters = new HashSet<Monster>();
+			corpses = new HashSet<Position>();
 		}
 		
 		public void addMonster(Monster m, Position pos){
@@ -76,28 +78,28 @@ public class Map{
 				borderY = to.yPos()+World.getPlayerHeight();
 			}
 			for(Wall wall : walls){
-				if((to.yPos()>wall.getYPos() && to.yPos()<wall.getYPos()+wall.getHeight()) ||
-						(to.yPos()+World.getPlayerHeight()>wall.getYPos() && to.yPos()+World.getPlayerHeight()<wall.getYPos()+wall.getHeight()) ||
-						(to.yPos()<=wall.getYPos() && to.yPos()+World.getPlayerHeight()>=wall.getYPos()+wall.getHeight())){
-					if((to.xPos()>wall.getXPos() && to.xPos()<wall.getXPos()+wall.getWidth()) ||
-							(to.xPos()<=wall.getXPos() && to.xPos()+World.getPlayerWidth()>=wall.getXPos()+wall.getWidth()) ||
-							(to.xPos()+World.getPlayerWidth()>wall.getXPos() && to.xPos()+World.getPlayerWidth()<wall.getXPos()+wall.getWidth())){
-						if(from.yPos()+World.getPlayerHeight()>wall.getYPos() && from.yPos()<wall.getYPos()+wall.getHeight()){
+				if((to.yPos()>wall.getYPos() && to.yPos()<wall.getYPos()+wall.height()) ||
+						(to.yPos()+World.getPlayerHeight()>wall.getYPos() && to.yPos()+World.getPlayerHeight()<wall.getYPos()+wall.height()) ||
+						(to.yPos()<=wall.getYPos() && to.yPos()+World.getPlayerHeight()>=wall.getYPos()+wall.height())){
+					if((to.xPos()>wall.getXPos() && to.xPos()<wall.getXPos()+wall.width()) ||
+							(to.xPos()<=wall.getXPos() && to.xPos()+World.getPlayerWidth()>=wall.getXPos()+wall.width()) ||
+							(to.xPos()+World.getPlayerWidth()>wall.getXPos() && to.xPos()+World.getPlayerWidth()<wall.getXPos()+wall.width())){
+						if(from.yPos()+World.getPlayerHeight()>wall.getYPos() && from.yPos()<wall.getYPos()+wall.height()){
 							
 							if(moveX>0){
 								borderX=Math.min(borderX, wall.getXPos());
 							}
 							if(moveX<0){
-								borderX=Math.max(borderX, wall.getXPos()+wall.getWidth());
+								borderX=Math.max(borderX, wall.getXPos()+wall.width());
 							}
 						}
 						
-						if(from.xPos()+World.getPlayerWidth()>wall.getXPos() && from.xPos()<wall.getXPos()+wall.getWidth()){
+						if(from.xPos()+World.getPlayerWidth()>wall.getXPos() && from.xPos()<wall.getXPos()+wall.width()){
 							if(moveY>0){
 								borderY=Math.min(borderY, wall.getYPos());
 							}
 							if(moveY<0){
-								borderY=Math.max(borderY, wall.getYPos()+wall.getHeight());
+								borderY=Math.max(borderY, wall.getYPos()+wall.height());
 							}
 						}
 					}
@@ -112,6 +114,58 @@ public class Map{
 				}
 			return (new Position(borderX,borderY));
 		}
+		
+		public Position checkMove(Position from, Position to, HashSet<Collidable> collidables){
+			
+			float moveX = to.xPos()-from.xPos();
+			float moveY = to.yPos()-from.yPos();
+			float borderX = to.xPos();
+			if(moveX>0){
+				borderX = to.xPos()+World.getPlayerWidth();
+			}
+			float borderY = to.yPos();
+			if(moveY>0){
+				borderY = to.yPos()+World.getPlayerHeight();
+			}
+			for(Collidable c : collidables){
+				if((to.yPos()>c.getYPos() && to.yPos()<c.getYPos()+c.height()) ||
+						(to.yPos()+World.getPlayerHeight()>c.getYPos() && to.yPos()+World.getPlayerHeight()<c.getYPos()+c.height()) ||
+						(to.yPos()<=c.getYPos() && to.yPos()+World.getPlayerHeight()>=c.getYPos()+c.height())){
+					if((to.xPos()>c.getXPos() && to.xPos()<c.getXPos()+c.width()) ||
+							(to.xPos()<=c.getXPos() && to.xPos()+World.getPlayerWidth()>=c.getXPos()+c.width()) ||
+							(to.xPos()+World.getPlayerWidth()>c.getXPos() && to.xPos()+World.getPlayerWidth()<c.getXPos()+c.width())){
+						if(from.yPos()+World.getPlayerHeight()>c.getYPos() && from.yPos()<c.getYPos()+c.height()){
+							
+							if(moveX>0){
+								borderX=Math.min(borderX, c.getXPos());
+							}
+							if(moveX<0){
+								borderX=Math.max(borderX, c.getXPos()+c.width());
+							}
+						}
+						
+						if(from.xPos()+World.getPlayerWidth()>c.getXPos() && from.xPos()<c.getXPos()+c.width()){
+							if(moveY>0){
+								borderY=Math.min(borderY, c.getYPos());
+							}
+							if(moveY<0){
+								borderY=Math.max(borderY, c.getYPos()+c.height());
+							}
+						}
+					}
+				}
+			}
+			if(moveX>0){
+				borderX = borderX-World.getPlayerWidth();
+				}
+			
+			if(moveY>0){
+				borderY = borderY-World.getPlayerHeight();
+				}
+			return (new Position(borderX,borderY));
+		}
+		
+		
 		
 		public Exit checkExits(Position pos){
 			for(Exit e : exits){
@@ -144,12 +198,12 @@ public class Map{
 		
 		public boolean isWalkable(Position pos){
 			for(Wall w : walls){
-				if((pos.yPos()>w.getYPos() && pos.yPos()<w.getYPos()+w.getHeight()) ||
-						(pos.yPos()+World.getPlayerHeight()>w.getYPos() && pos.yPos()+World.getPlayerHeight()<w.getYPos()+w.getHeight()) ||
-						(pos.yPos()<=w.getYPos() && pos.yPos()+World.getPlayerHeight()>=w.getYPos()+w.getHeight())){
-					if((pos.xPos()>w.getXPos() && pos.xPos()<w.getXPos()+w.getWidth()) ||
-							(pos.xPos()<=w.getXPos() && pos.xPos()+World.getPlayerWidth()>=w.getXPos()+w.getWidth()) ||
-							(pos.xPos()+World.getPlayerWidth()>w.getXPos() && pos.xPos()+World.getPlayerWidth()<w.getXPos()+w.getWidth())){
+				if((pos.yPos()>w.getYPos() && pos.yPos()<w.getYPos()+w.height()) ||
+						(pos.yPos()+World.getPlayerHeight()>w.getYPos() && pos.yPos()+World.getPlayerHeight()<w.getYPos()+w.height()) ||
+						(pos.yPos()<=w.getYPos() && pos.yPos()+World.getPlayerHeight()>=w.getYPos()+w.height())){
+					if((pos.xPos()>w.getXPos() && pos.xPos()<w.getXPos()+w.width()) ||
+							(pos.xPos()<=w.getXPos() && pos.xPos()+World.getPlayerWidth()>=w.getXPos()+w.width()) ||
+							(pos.xPos()+World.getPlayerWidth()>w.getXPos() && pos.xPos()+World.getPlayerWidth()<w.getXPos()+w.width())){
 						return false;
 					}
 				}
@@ -185,6 +239,14 @@ public class Map{
 		
 		public void addCorpse(Position pos){
 			corpses.add(pos);
+		}
+		
+		public HashSet<Collidable> getCollidables(){
+			HashSet<Collidable> collidables = new HashSet<Collidable>();
+			collidables.addAll(monsters);
+			collidables.addAll(walls);
+			collidables.add(World.player);
+			return collidables;
 		}
 		
 }

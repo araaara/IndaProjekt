@@ -2,6 +2,7 @@ package testgameost;
 
 import org.newdawn.slick.GameContainer;
 import java.lang.Math;
+import java.util.HashSet;
 
 public class Position{
 	
@@ -22,9 +23,15 @@ public class Position{
 	}
 	
 	public void offsetPos(float x, float y, Map map){
-		
-		
 		Position result = map.checkMove(new Position(this.x,this.y), new Position(this.x+x,this.y+y));
+		this.x = result.xPos();
+		this.y = result.yPos();
+	}
+	
+	public void offsetPos(float x, float y, Map map, Creature creature){
+		HashSet<Collidable> collidables = map.getCollidables();
+		collidables.remove(creature);
+		Position result = map.checkMove(new Position(this.x,this.y), new Position(this.x+x,this.y+y),collidables);
 		this.x = result.xPos();
 		this.y = result.yPos();
 	}

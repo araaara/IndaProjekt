@@ -100,7 +100,7 @@ public class Path {
 		Map result = new Map();
 		for(Wall w : map.getWalls()){
 			Position pos = new Position(w.getXPos()-s.width(),w.getYPos()-s.height());
-			result.addWall(new Wall(pos, w.getWidth()+s.width(),w.getHeight()+s.height()));
+			result.addWall(new Wall(pos, w.width()+s.width(),w.height()+s.height()));
 		}
 		return result;
 	}

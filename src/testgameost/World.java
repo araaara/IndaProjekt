@@ -66,7 +66,7 @@ public class World extends BasicGameState {
 	private Map currentMap;
 	
 	//Player
-	private static Player player;
+	public static Player player;
 	private Position playerPos = new Position(200,200);
 	private int direction = 0;
 	private int ATKTYPE = 1;
