@@ -12,7 +12,6 @@ public abstract class Creature {
 	protected int mp;
 	protected int maxHp;
 	protected int maxMp;
-	protected int armor;
 	protected Image image;
 	public int hitpoints;
 	protected String imagePath;
@@ -23,18 +22,19 @@ public abstract class Creature {
 	public Creature(Position pos){
 		this.pos = pos;
 		size=new Size(40,60);
-		mp=100;
 		maxHp=200;
 		maxMp=100;
+		mp=maxMp;
 		hitpoints = maxHp;
+		movementSpeed=1;
 	}
 	
 	public Creature(){
 		size=new Size(40,60);
-		mp=100;
 		maxHp=200;
 		maxMp=100;
 		pos = new Position(130,100);
+		mp=maxMp;
 		hitpoints = maxHp;
 	}
 	
@@ -61,7 +61,11 @@ public abstract class Creature {
 	public void setMaxHp(int hp) {
 		maxHp = maxHp + hp;
 		hitpoints = hitpoints + hp;
-		
+	}
+	
+	public void setMaxMp(int newMax){
+		maxMp = newMax;
+		mp = mp + newMax;
 	}
 	
 	public void changeHp(int hp, Map map){
