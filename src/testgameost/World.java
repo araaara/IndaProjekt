@@ -17,7 +17,6 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Polygon;
 
-import playernshit.Fireball;
 import playernshit.Projectile;
 import playernshit.Spell;
 
@@ -55,6 +54,7 @@ public class World extends BasicGameState {
 	private boolean key1;
 	private boolean key2;
 	private boolean key3;
+	private boolean keyR; //Debug för Power Weapon/Armor
 	
 	//Maps
 	private Map map1;
@@ -78,10 +78,14 @@ public class World extends BasicGameState {
 	
 	private boolean isAttacking = false;
 	
-	private static int ATKSPEED = 60;
+	private static int ATKSPEED;
 	private static int PROJECTILESPEED = 10;
-	private static int ATKDMG = 10;
+	private static int ATKDMG;
+	private static int HPBOOST;
 	
+	private Weapon currentWeapon;
+	private Armor currentArmor;
+	private Fireball currentSpell;
 	
 	private HashSet<Projectile> shots = new HashSet<Projectile>();
 	
@@ -222,7 +226,19 @@ public class World extends BasicGameState {
 		
 		PWIDTH = player.width();
 		PHEIGHT = player.height();
+		
+		Weapon basicSword = new Weapon("Basic Sword", 10, 60, 1);
 
+		currentWeapon = basicSword;
+		
+		currentArmor = new Armor("Basic Armor", 10, 50);
+		ATKDMG = currentWeapon.getDamage()+currentArmor.getDamageBoost();
+		ATKSPEED = currentWeapon.getAttackSpeed();
+		HPBOOST = currentArmor.getHpBoost();
+		
+		player.setMaxHp(HPBOOST);
+		
+		currentSpell = new Fireball(20, 12, 60);
 	}
 
 	@Override
@@ -301,6 +317,7 @@ public class World extends BasicGameState {
     	}
     	
     	if(keyA && ATKTYPE == 2 && swordCooldown == 0){ //Range
+    		
     		Image arrow = new Image("resources/arrow.png");
     		sendProjectile(arrow, PROJECTILESPEED, ATKDMG);
     		swordCooldown = ATKSPEED;
@@ -320,11 +337,11 @@ public class World extends BasicGameState {
     		chargeTime++;
     	}
     	
-    	Spell spell = new Fireball();
     	
-    	if(chargeTime == spell.getCharge()) {
-    		Image spellPic = new Image(spell.getImagePath());
-    		sendProjectile(spellPic, spell.getSpeed(), spell.getDamage());
+    	
+    	if(chargeTime == currentSpell.getCharge()) {
+    		Image spellPic = new Image(currentSpell.getImagePath());
+    		sendProjectile(spellPic, currentSpell.getSpeed(), currentSpell.getDamage());
     		chargeTime = 0;
     		swordCooldown = ATKSPEED;
     	}
@@ -332,15 +349,39 @@ public class World extends BasicGameState {
     	
     	
     	if(key1 && swordCooldown == 0) { //Switch to melee
-    		ATKTYPE = 1;
+    		currentWeapon = new Weapon("Basic Sword", 10, 60, 1);
+    		updateWeapon(currentWeapon);
+    		ATKTYPE = currentWeapon.getType();
     	}
     	
     	if(key2 && swordCooldown == 0) { //Switch to range
-    		ATKTYPE = 2;
+    		currentWeapon = new Weapon("Basic Bow", 15, 60, 2);
+    		updateWeapon(currentWeapon);
+    		ATKTYPE = currentWeapon.getType();
     	}
     	
     	if(key3 && swordCooldown == 0) { //Switch to spell
+    		currentSpell = new Fireball(20, 12, 60);
     		ATKTYPE = 3;
+    	}
+    	
+    	if(keyR && swordCooldown == 0) {
+    		Weapon powerWeapon;
+    		Armor powerArmor = new Armor("Power Armor", 100, 1000);
+    		if (ATKTYPE == 1) {
+    			powerWeapon = new Weapon("Power Weapon", 100, 40, 1);
+    			updateWeapon(powerWeapon);
+    		}
+    		else if (ATKTYPE == 2) {
+    			powerWeapon = new Weapon("Power Weapon", 100, 40, 2);
+    			updateWeapon(powerWeapon);
+    		}
+    		else { //Fireball, eftersom det inte är ett vapen
+    			currentSpell = new Fireball(120, 12, 40);
+    		}
+    		updateArmor(powerArmor);
+    		
+    		swordCooldown = ATKSPEED;
     	}
     	
 		g.drawImage(bars,0,300);
@@ -385,6 +426,7 @@ public class World extends BasicGameState {
 			key1 = container.getInput().isKeyDown(Input.KEY_1);
 			key2 = container.getInput().isKeyDown(Input.KEY_2);
 			key3 = container.getInput().isKeyDown(Input.KEY_3);
+			keyR = container.getInput().isKeyDown(Input.KEY_R);
 			
 			float moveX=0;
 			float moveY=0;
@@ -513,8 +555,18 @@ public class World extends BasicGameState {
 	}
 	
 	
+	private void updateArmor(Armor a) {
+		currentArmor = a;
+		ATKDMG = currentWeapon.getDamage()+currentArmor.getDamageBoost();
+		HPBOOST = currentArmor.getHpBoost();
+		player.setMaxHp(HPBOOST);
+	}
 	
-	
+	private void updateWeapon(Weapon w) {
+		currentWeapon = w;
+		ATKDMG = currentWeapon.getDamage()+currentArmor.getDamageBoost();
+		ATKSPEED = currentWeapon.getAttackSpeed();
+	}
 	
 	
 	private void attackMelee(Graphics g) {

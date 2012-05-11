@@ -1,34 +1,23 @@
-package playernshit;
+package testgameost;
 
-
-public class Fireball extends Spell{
+public class Fireball {
 	
 	private String name;
 	private int damage;
 	private int speed;
 	private String imagePath;
-	private boolean projectile;
 	private int charge;
 	
-	public Fireball() {
+	public Fireball(int d, int s, int c) {
 		name = "Fireball";
-		damage = 14;
-		speed = 12;
+		damage = d;
+		speed = s;
 		imagePath = "resources/fireball.png";
-		projectile = true;
-		charge = 60;
-	}
-
-	public void use() {
-		//NO USE 
+		charge = c;
 	}
 	
 	public String getName() {
 		return name;
-	}
-	
-	public boolean isProjectile() {
-		return projectile;
 	}
 	
 	public int getDamage() {
@@ -42,9 +31,10 @@ public class Fireball extends Spell{
 	public String getImagePath() {
 		return imagePath;
 	}
-
+	
 	public int getCharge() {
 		return charge;
 	}
+
 }
 
