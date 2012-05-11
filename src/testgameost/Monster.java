@@ -22,6 +22,7 @@ public class Monster extends Creature{
 		isHit = false;
 		image = new Image(imagePath);
 		attackSpeed = 120;
+		dmgRadius = 50;
 	}
 	
 	@Override
@@ -75,7 +76,7 @@ public class Monster extends Creature{
 	}
 	
 	public Circle getDmgCirle(){
-		return new Circle(getXPos(), getYPos(), 50);
+		return new Circle(getXPos()+(width()/2), getYPos()+(height()/2), dmgRadius);
 	}
 	
 	public void setDmgRadius(float newRadius){

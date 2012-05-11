@@ -219,31 +219,31 @@ public class World extends BasicGameState {
     	
     	
     	if(key1 && swordCooldown == 0) { //Switch to melee
-    		currentWeapon = new Weapon("Basic Sword", 10, 60, 1);
-    		updateWeapon(currentWeapon);
-    		ATKTYPE = currentWeapon.getType();
+    		//currentWeapon = new Weapon("Basic Sword", 10, 60, 1, 0);
+    		//updateWeapon(currentWeapon);
+    		//ATKTYPE = currentWeapon.getType();
     	}
     	
     	if(key2 && swordCooldown == 0) { //Switch to range
-    		currentWeapon = new Weapon("Basic Bow", 15, 60, 2);
-    		updateWeapon(currentWeapon);
-    		ATKTYPE = currentWeapon.getType();
+    		//currentWeapon = new Weapon("Basic Bow", 15, 60, 2, 0);
+    		//updateWeapon(currentWeapon);
+    		//ATKTYPE = currentWeapon.getType();
     	}
     	
     	if(key3 && swordCooldown == 0) { //Switch to spell
     		currentSpell = new Fireball(20, 12, 60);
     		ATKTYPE = 3;
     	}
-    	
+    	/*
     	if(keyR && swordCooldown == 0) {
     		Weapon powerWeapon;
     		Armor powerArmor = new Armor("Power Armor", 100, 1000);
     		if (ATKTYPE == 1) {
-    			powerWeapon = new Weapon("Power Weapon", 100, 40, 1);
+    			powerWeapon = new Weapon("Power Weapon", 100, 40, 1, 100);
     			updateWeapon(powerWeapon);
     		}
     		else if (ATKTYPE == 2) {
-    			powerWeapon = new Weapon("Power Weapon", 100, 40, 2);
+    			powerWeapon = new Weapon("Power Weapon", 100, 40, 2, 100);
     			updateWeapon(powerWeapon);
     		}
     		else { //Fireball, eftersom det inte är ett vapen
@@ -253,13 +253,16 @@ public class World extends BasicGameState {
     		
     		swordCooldown = ATKSPEED;
     	}
+    	*/
     	
 		g.drawImage(bars,0,300);
 		g.setColor(Color.green);
 		g.fillRect(26, 326, new Float(player.getHpPercentage()*160), 12);
+		g.fillRect(26, 358, new Float(player.getMpPercentage()*160), 12);
 		g.setColor(Color.white);
 		//g.drawString(("" + player.getHpPercentage()*100).substring(0,3)+ "%", 80, 323);
 		g.drawString("" + player.gethp()+"/"+player.getMaxHp(), 76, 323);
+		g.drawString("" + player.getMp()+"/"+player.getMaxMp(), 76, 355);
 		
 		
 		
@@ -362,7 +365,7 @@ public class World extends BasicGameState {
     	
     	currentMap.moveMonsters(player, currentMap);
     	for(Monster m : currentMap.monsters()){
-    		if(m.getDmgCirle().intersects(player.getHitbox())){
+    		if(m.getDmgCirle().intersects(player.getHitbox()) && m.getCooldown()==0 && player.gethp()>0){
     			player.loseHitpoints(m.getDamage(), currentMap);
     			m.resetCooldown();
     		}
@@ -432,7 +435,7 @@ public class World extends BasicGameState {
 		return direction;
 	}
 	
-	
+	/*
 	private void updateArmor(Armor a) {
 		currentArmor = a;
 		ATKDMG = currentWeapon.getDamage()+currentArmor.getDamageBoost();
@@ -445,6 +448,7 @@ public class World extends BasicGameState {
 		ATKDMG = currentWeapon.getDamage()+currentArmor.getDamageBoost();
 		ATKSPEED = currentWeapon.getAttackSpeed();
 	}
+	*/
 	
 	
 	private void attackMelee(Graphics g) {
@@ -789,15 +793,17 @@ public class World extends BasicGameState {
 		bars = new Image("resources/bars.png");
 		
 		
-		Weapon basicSword = new Weapon("Basic Sword", 10, 60, 1);
+		Weapon basicSword = new Weapon("Basic Sword", 10, 60, 1, 0, 0);
 
 		currentWeapon = basicSword;
 		
-		currentArmor = new Armor("Basic Armor", 10, 50);
+		currentArmor = new Armor("Basic Armor", 10, 50, 0);
+		/*
 		ATKDMG = currentWeapon.getDamage()+currentArmor.getDamageBoost();
 		ATKSPEED = currentWeapon.getAttackSpeed();
 		HPBOOST = currentArmor.getHpBoost();
 		player.increaseMaxHp(HPBOOST);
+		*/
 		
 		currentSpell = new Fireball(20, 12, 60);
 		
