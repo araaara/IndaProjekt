@@ -10,6 +10,8 @@ public class GameTest1 extends StateBasedGame{
 	private static final int MAXFPS = 60;
 	public static final int SCALE = 2;
 	
+	public static boolean gameStarted = false;
+	
 	public GameTest1() {
 		super("GameTest1");
 	}
@@ -27,7 +29,6 @@ public class GameTest1 extends StateBasedGame{
 	public static void main(String[] args) {
 		try {
 			AppGameContainer container = new AppGameContainer(new GameTest1());
-			
 			container.setDisplayMode(200*SCALE,200*SCALE,false);
 			container.setTargetFrameRate(MAXFPS);
 			container.setShowFPS(false);

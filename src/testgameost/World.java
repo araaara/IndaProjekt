@@ -16,6 +16,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Polygon;
+import org.newdawn.slick.state.transition.FadeOutTransition;
+import org.newdawn.slick.state.transition.FadeInTransition;
 
 import playernshit.Projectile;
 import playernshit.Spell;
@@ -95,7 +97,8 @@ public class World extends BasicGameState {
 	//Shape for testing hitboxes
 	private Shape hitBoxTest;
 	
-	
+	//Game over counter
+	private int gameOver = 60*7;
 	
 	
 	
@@ -103,191 +106,8 @@ public class World extends BasicGameState {
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
-		
-		player = new Player(playerPos);
-		player.setMovementSpeed(2);
-		player.setMaxHp(200);
-		player.setHp(200);
-		
-		PWIDTH = player.width();
-		PHEIGHT = player.height();
-		
-		toggleHitBox = false;
-		togglePosition = false;
-		showEnemyHp = false;
-		
-		char2 = new Image("resources/guy2.png");
-		bars = new Image("resources/bars.png");
-		
-		walking = new Animation[8];
-		facing = new Animation[8];
-		swordAttack = new Animation[8];
-		strike = new Animation[8];
-		
-		Image[] fDown = {char2};
-		Image[] fRight = {new Image("resources/guy2_fr.png")};
-		Image[] fLeft = {new Image("resources/guy2_fl.png")};
-		Image[] fUp = {new Image("resources/guy2_b.png")};
-		
-		
-		
-		facing[0] = new Animation(fDown,1);
-		facing[1] = new Animation(fDown,1);
-		facing[2] = new Animation(fRight,1);
-		facing[3] = new Animation(fUp,1);
-		facing[4] = new Animation(fUp,1);
-		facing[5] = new Animation(fUp,1);
-		facing[6] = new Animation(fLeft,1);
-		facing[7] = new Animation(fDown,1);
-		
-		//Walking animations
-		Image[] wDown = {char2,new Image("resources/guy2_2.png"), char2,new Image("resources/guy2_3.png")};
-		Image[] wRight = {new Image("resources/guy2_fr.png"), new Image("resources/guy2_fr_2.png"), 
-				new Image("resources/guy2_fr.png"),new Image("resources/guy2_fr_3.png")};
-		Image[] wLeft = {new Image("resources/guy2_fl.png"), new Image("resources/guy2_fl_2.png"), 
-				new Image("resources/guy2_fl.png"),new Image("resources/guy2_fl_3.png")};
-		Image[] wUp = {new Image("resources/guy2_b.png"), new Image("resources/guy2_b_2.png"),
-				new Image("resources/guy2_b.png"), new Image("resources/guy2_b_3.png")};
-		
-		walking[0] = new Animation(wDown,180);
-		walking[1] = new Animation(wDown,180);
-		walking[2] = new Animation(wRight, 180);
-		walking[3] = new Animation(wUp,180);
-		walking[4] = new Animation(wUp,180);
-		walking[5] = new Animation(wUp,180);
-		walking[6] = new Animation(wLeft, 180);
-		walking[7] = new Animation(wDown,180);
-		
-		//Sword attack animations
-		Image[] swordAttackRight = {new Image("resources/guy2_fr_sw.png"), new Image("resources/guy2_fr_sw_2.png"),
-				new Image("resources/guy2_fr_sw_3.png"), new Image("resources/guy2_fr_sw.png")};
-		Image[] swordAttackLeft = {new Image("resources/guy2_fl_sw.png"), new Image("resources/guy2_fl_sw_2.png"),
-				new Image("resources/guy2_fl_sw_3.png"), new Image("resources/guy2_fl_sw.png")};
-		
-		swordAttack[0] = new Animation(swordAttackRight,180);
-		swordAttack[1] = new Animation(swordAttackRight,180);
-		swordAttack[2] = new Animation(swordAttackRight,180);
-		swordAttack[3] = new Animation(swordAttackRight,180);
-		swordAttack[4] = new Animation(swordAttackRight,180);
-		swordAttack[5] = new Animation(swordAttackRight,180);
-		swordAttack[6] = new Animation(swordAttackLeft,180);
-		swordAttack[7] = new Animation(swordAttackRight,180);
-		
-		swordAttack[0].stopAt(3);
-		swordAttack[1].stopAt(3);
-		swordAttack[2].stopAt(3);
-		swordAttack[3].stopAt(3);
-		swordAttack[4].stopAt(3);
-		swordAttack[5].stopAt(3);
-		swordAttack[6].stopAt(3);
-		swordAttack[7].stopAt(3);
-		
-		Image strikeRight = new Image("resources/strike.png");
-		Image strikeUp = strikeRight.copy();
-		Image strikeDown = strikeRight.copy();
-		Image strike1Img = strikeRight.copy();
-		Image strike3Img = strikeRight.copy();
-		Image strike5Img = strikeRight.copy();
-		Image strike7Img = strikeRight.copy();
-		
-		strikeUp.rotate(-90);
-		strikeDown.rotate(90);
-		strike1Img.rotate(45);
-		strike3Img.rotate(-45);
-		strike5Img.rotate(-135);
-		strike7Img.rotate(135);
-		
-		Image[] strike0 = {strikeDown};
-		Image[] strike1 = {strike1Img};
-		Image[] strike2 = {strikeRight};
-		Image[] strike3 = {strike3Img};
-		Image[] strike4 = {strikeUp};
-		Image[] strike5 = {strike5Img};
-		Image[] strike6 = {strikeRight.getFlippedCopy(true, false)};
-		Image[] strike7 = {strike7Img};
-		
-		
-		
-		strike[0] = new Animation(strike0, 180);
-		strike[1] = new Animation(strike1, 180);
-		strike[2] = new Animation(strike2, 180);
-		strike[3] = new Animation(strike3, 180);
-		strike[4] = new Animation(strike4, 180);
-		strike[5] = new Animation(strike5, 180);
-		strike[6] = new Animation(strike6, 180);
-		strike[7] = new Animation(strike7, 180);
-		
-		
-		currentAnim = facing[0];
-		
-		corpse = new Image("resources/lik.png");
-		
-		map1 = new Map("resources/map_1.png");
-		map1.addWall(new Position(0,0), 25, 300);
-		map1.addWall(new Position(375,0), 25, 300);
-		map1.addWall(new Position(25,-100), 125, 145);
-		map1.addWall(new Position(25,260), 350, 45);
-		map1.addWall(new Position(260,-100), 155, 145);
-		map1.addWall(new Position(84,136),70,52);
-		map2 = new Map("resources/map_2.png");
-		map2.addWall(new Position(-100,0), 125, 90);
-		map2.addWall(new Position(375,0), 100, 100);
-		map2.addWall(new Position(25,-100), 125, 145);
-		map2.addWall(new Position(25,260), 125, 45);
-		map2.addWall(new Position(-100,180), 125, 120);
-		map2.addWall(new Position(260,-100), 155, 140);
-		map2.addWall(new Position(260,260), 150, 150);
-		map2.addWall(new Position(375,200),100,150);
-		map3 = new Map("resources/map_3.png");
-		map3.addWall(new Position(0,0),25,300);
-		map3.addWall(new Position(0,0),400,45);
-		map3.addWall(new Position(375,0),25,300);
-		map3.addWall(new Position(260,260), 150, 150);
-		map3.addWall(new Position(0,260), 150, 150);
-		map4 = new Map("resources/map_4.png");
-		map4.addWall(new Position(0,0),25,300);
-		map4.addWall(new Position(0,0),400,45);
-		map4.addWall(new Position(0,255), 400, 45);
-		map4.addWall(new Position(375,0),150,90);
-		map4.addWall(new Position(375,180), 150, 120);
-		map5 = new Map("resources/map_5.png");
-		map5.addWall(new Position(-100,0),125,100);
-		map5.addWall(new Position(0,0),400,45);
-		map5.addWall(new Position(0,255), 400, 45);
-		map5.addWall(new Position(375,0),25,300);
-		map5.addWall(new Position(-100,200), 125, 120);
-		currentMap = map1;
-		
-		addLink(map2,map1,new Position(150,300),100);
-		addLink(map2,map3,new Position(150,0),100);
-		addLink(map2,map4,new Position(0,90),90);
-		addLink(map2,map5,new Position(400,100),100);
-		
-		map3.addMonster(new Monster(), new Position(130,100));
-		Monster m1 = new Monster();
-		m1.setDamage(0);
-		m1.setMovementSpeed(0);
-		m1.setMaxHp(50);
-		map5.addMonster(m1, new Position(130,130));
-		
-		
-		
-		char2 = new Image("resources/char2.png");
-		bars = new Image("resources/bars.png");
-		
-		
-		Weapon basicSword = new Weapon("Basic Sword", 10, 60, 1);
-
-		currentWeapon = basicSword;
-		
-		currentArmor = new Armor("Basic Armor", 10, 50);
-		ATKDMG = currentWeapon.getDamage()+currentArmor.getDamageBoost();
-		ATKSPEED = currentWeapon.getAttackSpeed();
-		HPBOOST = currentArmor.getHpBoost();
-		
-		player.setMaxHp(HPBOOST);
-		
-		currentSpell = new Fireball(20, 12, 60);
+		GameTest1.gameStarted = true;
+		buildWorld(container, game);
 	}
 
 	@Override
@@ -316,14 +136,13 @@ public class World extends BasicGameState {
 		}
 		if(player.alive()){
 			g.drawAnimation(currentAnim, player.getXPos(), player.getYPos());
-			
 			if(isAttacking){
 				drawStrikeAnimation(g);
-				
-				
-			}
-			
-			
+			}	
+		}
+		else{
+			g.drawString("GAME OVER", 170, 100);
+			gameOver--;
 		}
 		if(togglePosition){
 			g.drawString(player.getPosition().toString(), 10, 10);
@@ -463,6 +282,9 @@ public class World extends BasicGameState {
 		}
 		if(keyEsc){
 			game.enterState(1);
+		}
+		if(gameOver <= 0){
+			game.enterState(3, new FadeOutTransition(Color.black,60*6), new FadeInTransition(Color.black,60*6));
 		}
 		if(player.alive() && !isAttacking){
 			keyUp = container.getInput().isKeyDown(Input.KEY_UP);
@@ -783,6 +605,218 @@ public class World extends BasicGameState {
 		if(toggleHitBox){
 			g.fill(hitBoxTest);
 		}
+	}
+	
+	public void buildWorld(GameContainer container, StateBasedGame game)
+			throws SlickException {
+		
+		player = new Player(playerPos);
+		player.setMovementSpeed(2);
+		player.setMaxHp(200);
+		player.setHp(200);
+		
+		PWIDTH = player.width();
+		PHEIGHT = player.height();
+		
+		toggleHitBox = false;
+		togglePosition = false;
+		showEnemyHp = false;
+		
+		char2 = new Image("resources/guy2.png");
+		bars = new Image("resources/bars.png");
+		
+		walking = new Animation[8];
+		facing = new Animation[8];
+		swordAttack = new Animation[8];
+		strike = new Animation[8];
+		
+		Image[] fDown = {char2};
+		Image[] fRight = {new Image("resources/guy2_fr.png")};
+		Image[] fLeft = {new Image("resources/guy2_fl.png")};
+		Image[] fUp = {new Image("resources/guy2_b.png")};
+		
+		
+		
+		facing[0] = new Animation(fDown,1);
+		facing[1] = new Animation(fDown,1);
+		facing[2] = new Animation(fRight,1);
+		facing[3] = new Animation(fUp,1);
+		facing[4] = new Animation(fUp,1);
+		facing[5] = new Animation(fUp,1);
+		facing[6] = new Animation(fLeft,1);
+		facing[7] = new Animation(fDown,1);
+		
+		//Walking animations
+		Image[] wDown = {char2,new Image("resources/guy2_2.png"), char2,new Image("resources/guy2_3.png")};
+		Image[] wRight = {new Image("resources/guy2_fr.png"), new Image("resources/guy2_fr_2.png"), 
+				new Image("resources/guy2_fr.png"),new Image("resources/guy2_fr_3.png")};
+		Image[] wLeft = {new Image("resources/guy2_fl.png"), new Image("resources/guy2_fl_2.png"), 
+				new Image("resources/guy2_fl.png"),new Image("resources/guy2_fl_3.png")};
+		Image[] wUp = {new Image("resources/guy2_b.png"), new Image("resources/guy2_b_2.png"),
+				new Image("resources/guy2_b.png"), new Image("resources/guy2_b_3.png")};
+		
+		walking[0] = new Animation(wDown,180);
+		walking[1] = new Animation(wDown,180);
+		walking[2] = new Animation(wRight, 180);
+		walking[3] = new Animation(wUp,180);
+		walking[4] = new Animation(wUp,180);
+		walking[5] = new Animation(wUp,180);
+		walking[6] = new Animation(wLeft, 180);
+		walking[7] = new Animation(wDown,180);
+		
+		//Sword attack animations
+		Image[] swordAttackRight = {new Image("resources/guy2_fr_sw.png"), new Image("resources/guy2_fr_sw_2.png"),
+				new Image("resources/guy2_fr_sw_3.png"), new Image("resources/guy2_fr_sw.png")};
+		Image[] swordAttackLeft = {new Image("resources/guy2_fl_sw.png"), new Image("resources/guy2_fl_sw_2.png"),
+				new Image("resources/guy2_fl_sw_3.png"), new Image("resources/guy2_fl_sw.png")};
+		
+		swordAttack[0] = new Animation(swordAttackRight,180);
+		swordAttack[1] = new Animation(swordAttackRight,180);
+		swordAttack[2] = new Animation(swordAttackRight,180);
+		swordAttack[3] = new Animation(swordAttackRight,180);
+		swordAttack[4] = new Animation(swordAttackRight,180);
+		swordAttack[5] = new Animation(swordAttackRight,180);
+		swordAttack[6] = new Animation(swordAttackLeft,180);
+		swordAttack[7] = new Animation(swordAttackRight,180);
+		
+		swordAttack[0].stopAt(3);
+		swordAttack[1].stopAt(3);
+		swordAttack[2].stopAt(3);
+		swordAttack[3].stopAt(3);
+		swordAttack[4].stopAt(3);
+		swordAttack[5].stopAt(3);
+		swordAttack[6].stopAt(3);
+		swordAttack[7].stopAt(3);
+		
+		Image strikeRight = new Image("resources/strike.png");
+		Image strikeUp = strikeRight.copy();
+		Image strikeDown = strikeRight.copy();
+		Image strike1Img = strikeRight.copy();
+		Image strike3Img = strikeRight.copy();
+		Image strike5Img = strikeRight.copy();
+		Image strike7Img = strikeRight.copy();
+		
+		strikeUp.rotate(-90);
+		strikeDown.rotate(90);
+		strike1Img.rotate(45);
+		strike3Img.rotate(-45);
+		strike5Img.rotate(-135);
+		strike7Img.rotate(135);
+		
+		Image[] strike0 = {strikeDown};
+		Image[] strike1 = {strike1Img};
+		Image[] strike2 = {strikeRight};
+		Image[] strike3 = {strike3Img};
+		Image[] strike4 = {strikeUp};
+		Image[] strike5 = {strike5Img};
+		Image[] strike6 = {strikeRight.getFlippedCopy(true, false)};
+		Image[] strike7 = {strike7Img};
+		
+		
+		
+		strike[0] = new Animation(strike0, 180);
+		strike[1] = new Animation(strike1, 180);
+		strike[2] = new Animation(strike2, 180);
+		strike[3] = new Animation(strike3, 180);
+		strike[4] = new Animation(strike4, 180);
+		strike[5] = new Animation(strike5, 180);
+		strike[6] = new Animation(strike6, 180);
+		strike[7] = new Animation(strike7, 180);
+		
+		
+		currentAnim = facing[0];
+		
+		corpse = new Image("resources/lik.png");
+		
+		map1 = new Map("resources/map_1.png");
+		map1.addWall(new Position(0,0), 25, 300);
+		map1.addWall(new Position(375,0), 25, 300);
+		map1.addWall(new Position(25,-100), 125, 145);
+		map1.addWall(new Position(25,260), 350, 45);
+		map1.addWall(new Position(260,-100), 155, 145);
+		map1.addWall(new Position(84,136),70,52);
+		map2 = new Map("resources/map_2.png");
+		map2.addWall(new Position(-100,0), 125, 90);
+		map2.addWall(new Position(375,0), 100, 100);
+		map2.addWall(new Position(25,-100), 125, 145);
+		map2.addWall(new Position(25,260), 125, 45);
+		map2.addWall(new Position(-100,180), 125, 120);
+		map2.addWall(new Position(260,-100), 155, 140);
+		map2.addWall(new Position(260,260), 150, 150);
+		map2.addWall(new Position(375,200),100,150);
+		map3 = new Map("resources/map_3.png");
+		map3.addWall(new Position(0,0),25,300);
+		map3.addWall(new Position(0,0),400,45);
+		map3.addWall(new Position(375,0),25,300);
+		map3.addWall(new Position(260,260), 150, 150);
+		map3.addWall(new Position(0,260), 150, 150);
+		map4 = new Map("resources/map_4.png");
+		map4.addWall(new Position(0,0),25,300);
+		map4.addWall(new Position(0,0),400,45);
+		map4.addWall(new Position(0,255), 400, 45);
+		map4.addWall(new Position(375,0),150,90);
+		map4.addWall(new Position(375,180), 150, 120);
+		map5 = new Map("resources/map_5.png");
+		map5.addWall(new Position(-100,0),125,100);
+		map5.addWall(new Position(0,0),400,45);
+		map5.addWall(new Position(0,255), 400, 45);
+		map5.addWall(new Position(375,0),25,300);
+		map5.addWall(new Position(-100,200), 125, 120);
+		currentMap = map1;
+		
+		addLink(map2,map1,new Position(150,300),100);
+		addLink(map2,map3,new Position(150,0),100);
+		addLink(map2,map4,new Position(0,90),90);
+		addLink(map2,map5,new Position(400,100),100);
+		
+		map3.addMonster(new Monster(), new Position(130,100));
+		Monster m1 = new Monster();
+		m1.setDamage(0);
+		m1.setMovementSpeed(0);
+		m1.setMaxHp(50);
+		map5.addMonster(m1, new Position(130,130));
+		
+		
+		
+		char2 = new Image("resources/char2.png");
+		bars = new Image("resources/bars.png");
+		
+		
+		Weapon basicSword = new Weapon("Basic Sword", 10, 60, 1);
+
+		currentWeapon = basicSword;
+		
+		currentArmor = new Armor("Basic Armor", 10, 50);
+		ATKDMG = currentWeapon.getDamage()+currentArmor.getDamageBoost();
+		ATKSPEED = currentWeapon.getAttackSpeed();
+		HPBOOST = currentArmor.getHpBoost();
+		
+		player.setMaxHp(HPBOOST);
+		
+		currentSpell = new Fireball(20, 12, 60);
+		
+		
+		playerPos = new Position(200,200);
+		direction = 0;
+		ATKTYPE = 1;
+		swordCooldown = 0;
+		
+		isAttacking = false;
+		
+		ATKSPEED = 40;
+		PROJECTILESPEED = 10;
+		
+		shots = new HashSet<Projectile>();
+		
+		charging = true;
+		chargeTime = 0;
+		
+		gameOver = 60*7;
+	}
+	
+	public void leave(GameContainer container, StateBasedGame game)
+	           throws SlickException{
+		buildWorld(container, game);
 	}
 
 }

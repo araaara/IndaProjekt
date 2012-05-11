@@ -47,6 +47,7 @@ public class Credits extends BasicGameState {
 		}
 		
 		if (rollingDone) {
+			GameTest1.gameStarted=false;
 			game.enterState(MENUID);
 		}
 

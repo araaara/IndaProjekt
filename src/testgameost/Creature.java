@@ -56,14 +56,23 @@ public abstract class Creature implements Collidable{
 		return maxMp;
 	}
 	
-	public void setMaxHp(int hp) {
+	public void increaseMaxHp(int hp) {
 		maxHp = maxHp + hp;
 		hitpoints = hitpoints + hp;
 	}
 	
+	public void setMaxHp(int newMax){
+		maxHp = newMax;
+		if(hitpoints>maxHp){
+			hitpoints = maxHp;
+		}
+	}
+	
 	public void setMaxMp(int newMax){
 		maxMp = newMax;
-		mp = mp + newMax;
+		if(mp>maxMp){
+			mp = maxMp;
+		}
 	}
 	
 	public void changeHp(int hp, Map map){
@@ -168,21 +177,6 @@ public abstract class Creature implements Collidable{
 	public void die(Map map) {
 		map.addCorpse(getPosition());
 	}
-	/*
-	public void setMaxHp(int newMax){
-		maxHp = newMax;
-		if(hitpoints>maxHp){
-			hitpoints = maxHp;
-		}
-	}
-	
-	public void setMaxMp(int newMax){
-		maxMp = newMax;
-		if(mp>maxMp){
-			mp = maxMp;
-		}
-	}
-	*/
 	
 	public void setHp(int hp){
 		hitpoints = hp;
