@@ -1,5 +1,6 @@
 package testgameost;
 import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -8,6 +9,7 @@ public class Monster extends Creature{
 	private int cooldown;
 	private int damage;
 	private int attackSpeed;
+	private float dmgRadius;
 
 
 
@@ -70,5 +72,13 @@ public class Monster extends Creature{
 			y=-1;
 		}
 		move(x, y, map);
+	}
+	
+	public Circle getDmgCirle(){
+		return new Circle(getXPos(), getYPos(), 50);
+	}
+	
+	public void setDmgRadius(float newRadius){
+		dmgRadius = newRadius;
 	}
 }

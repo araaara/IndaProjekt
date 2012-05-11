@@ -362,11 +362,18 @@ public class World extends BasicGameState {
     	
     	currentMap.moveMonsters(player, currentMap);
     	for(Monster m : currentMap.monsters()){
+    		if(m.getDmgCirle().intersects(player.getHitbox())){
+    			player.loseHitpoints(m.getDamage(), currentMap);
+    			m.resetCooldown();
+    		}
+    		m.countCooldown();
+    		/*
     		if(Position.distance(player.getPosition(), m.getPosition())<50 && m.getCooldown()==0 && player.gethp()>0){
         		player.loseHitpoints(m.getDamage(), currentMap);
         		m.resetCooldown();
         	}
     		m.countCooldown();
+    		*/
     	}
     	
     	
