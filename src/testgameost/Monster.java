@@ -7,6 +7,7 @@ public class Monster extends Creature{
 	
 	private int cooldown;
 	private int damage;
+	private int attackSpeed;
 
 
 
@@ -18,6 +19,7 @@ public class Monster extends Creature{
 		imagePath = "resources/monster2.png";
 		isHit = false;
 		image = new Image(imagePath);
+		attackSpeed = 120;
 	}
 	
 	@Override
@@ -37,8 +39,12 @@ public class Monster extends Creature{
 		return cooldown;
 	}
 	
+	public void setAttackSpeed(int newSpeed){
+		attackSpeed = newSpeed;
+	}
+	
 	public void resetCooldown(){
-		cooldown = 60;
+		cooldown = attackSpeed;
 	}
 	
 	public void countCooldown(){
