@@ -54,10 +54,6 @@ public abstract class Creature {
 		return maxMp;
 	}
 	
-	public int getArmor(){
-		return armor;
-	}
-	
 	public void setMaxHp(int hp) {
 		maxHp = maxHp + hp;
 		hitpoints = hitpoints + hp;
