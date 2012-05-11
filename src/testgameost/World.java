@@ -790,8 +790,7 @@ public class World extends BasicGameState {
 		ATKDMG = currentWeapon.getDamage()+currentArmor.getDamageBoost();
 		ATKSPEED = currentWeapon.getAttackSpeed();
 		HPBOOST = currentArmor.getHpBoost();
-		
-		player.setMaxHp(HPBOOST);
+		player.increaseMaxHp(HPBOOST);
 		
 		currentSpell = new Fireball(20, 12, 60);
 		

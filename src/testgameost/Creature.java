@@ -132,14 +132,17 @@ public abstract class Creature implements Collidable{
 	}
 	
 	public void move(float x, float y, Map map){
+		pos.offsetPos((x*movementSpeed), (y*movementSpeed), map,this);
+		/*
 		if(x==0 || y==0){
 			pos.offsetPos((x*movementSpeed), (y*movementSpeed), map);
 		}
 		else{
 			float moveX = (float)Math.cos(Math.atan(Math.abs(x)/Math.abs(y)))*movementSpeed;
 			float moveY = (float)Math.sin(Math.atan(Math.abs(x)/Math.abs(y)))*movementSpeed;
-			pos.offsetPos(x*moveX, y*moveY, map);
+			pos.offsetPos(x*moveX, y*moveY, map, this);
 		}
+		*/
 	}
 	
 	public void setMovementSpeed(float newSpeed){

@@ -31,7 +31,7 @@ public class Position{
 	public void offsetPos(float x, float y, Map map, Creature creature){
 		HashSet<Collidable> collidables = map.getCollidables();
 		collidables.remove(creature);
-		Position result = map.checkMove(new Position(this.x,this.y), new Position(this.x+x,this.y+y),collidables);
+		Position result = map.checkMove(new Position(this.x,this.y), new Position(this.x+x,this.y+y), collidables);
 		this.x = result.xPos();
 		this.y = result.yPos();
 	}
