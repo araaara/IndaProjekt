@@ -22,10 +22,11 @@ public abstract class Creature {
 	public Creature(Position pos){
 		this.pos = pos;
 		size=new Size(40,60);
-		mp=100;
 		maxHp=200;
 		maxMp=100;
-		hitpoints = 200;
+		mp=maxMp;
+		hitpoints = maxHp;
+		movementSpeed=1;
 	}
 	
 	public Creature(){
@@ -35,6 +36,7 @@ public abstract class Creature {
 		maxMp=100;
 		pos = new Position(130,100);
 		hitpoints = 200;
+		movementSpeed=1;
 	}
 	
 	public int gethp(){
@@ -154,6 +156,20 @@ public abstract class Creature {
 	
 	public void die(Map map) {
 		map.addCorpse(getPosition());
+	}
+	
+	public void setMaxHp(int newMax){
+		maxHp = newMax;
+		if(hitpoints>maxHp){
+			hitpoints = maxHp;
+		}
+	}
+	
+	public void setMaxMp(int newMax){
+		maxMp = newMax;
+		if(mp>maxMp){
+			mp = maxMp;
+		}
 	}
 
 }
