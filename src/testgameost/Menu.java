@@ -24,7 +24,7 @@ public class Menu extends BasicGameState {
 	private static final int COOLDOWN=10;
 	
 	private int selectedOption;
-	private String[] options={"New Game","Credits","Controls"};
+	private String[] options={"New Game","Credits"};
 	
 	
 	

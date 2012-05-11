@@ -670,14 +670,14 @@ public class World extends BasicGameState {
 		Image[] swordAttackLeft = {new Image("resources/guy2_fl_sw.png"), new Image("resources/guy2_fl_sw_2.png"),
 				new Image("resources/guy2_fl_sw_3.png"), new Image("resources/guy2_fl_sw.png")};
 		
-		swordAttack[0] = new Animation(swordAttackRight,180);
+		swordAttack[0] = new Animation(swordAttackLeft,180);
 		swordAttack[1] = new Animation(swordAttackRight,180);
 		swordAttack[2] = new Animation(swordAttackRight,180);
 		swordAttack[3] = new Animation(swordAttackRight,180);
 		swordAttack[4] = new Animation(swordAttackRight,180);
-		swordAttack[5] = new Animation(swordAttackRight,180);
+		swordAttack[5] = new Animation(swordAttackLeft,180);
 		swordAttack[6] = new Animation(swordAttackLeft,180);
-		swordAttack[7] = new Animation(swordAttackRight,180);
+		swordAttack[7] = new Animation(swordAttackLeft,180);
 		
 		swordAttack[0].stopAt(3);
 		swordAttack[1].stopAt(3);
@@ -816,7 +816,9 @@ public class World extends BasicGameState {
 	
 	public void leave(GameContainer container, StateBasedGame game)
 	           throws SlickException{
-		buildWorld(container, game);
+		if(gameOver<1){
+			buildWorld(container, game);
+		}
 	}
 
 }
