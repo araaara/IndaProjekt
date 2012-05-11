@@ -22,7 +22,7 @@ public abstract class Creature {
 	public Creature(Position pos){
 		this.pos = pos;
 		size=new Size(40,60);
-		maxHp=200;
+		maxHp=100;
 		maxMp=100;
 		mp=maxMp;
 		hitpoints = maxHp;
@@ -31,11 +31,11 @@ public abstract class Creature {
 	
 	public Creature(){
 		size=new Size(40,60);
-		mp=100;
-		maxHp=200;
+		maxHp=100;
 		maxMp=100;
+		mp = maxMp;
 		pos = new Position(130,100);
-		hitpoints = 200;
+		hitpoints = maxHp;
 		movementSpeed=1;
 	}
 	
@@ -170,6 +170,14 @@ public abstract class Creature {
 		if(mp>maxMp){
 			mp = maxMp;
 		}
+	}
+	
+	public void setHp(int hp){
+		hitpoints = hp;
+	}
+	
+	public void setMp(int mp){
+		this.mp = mp;
 	}
 
 }

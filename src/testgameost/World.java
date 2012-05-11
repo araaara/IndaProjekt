@@ -65,25 +65,18 @@ public class World extends BasicGameState {
 	private Map map5;
 	private Map currentMap;
 	
+	//Player
 	private static Player player;
-	
-
-	
 	private Position playerPos = new Position(200,200);
-	
-	//Shape for testing hitboxes
-	private Shape hitBoxTest;
-	
 	private int direction = 0;
 	private int ATKTYPE = 1;
 	private int swordCooldown = 0;
 	
 	private boolean isAttacking = false;
 	
-	private static int ATKSPEED = 60;
+	private static int ATKSPEED = 40;
 	private static int PROJECTILESPEED = 10;
 	private static int ATKDMG = 10;
-	
 	
 	private HashSet<Projectile> shots = new HashSet<Projectile>();
 	
@@ -92,12 +85,23 @@ public class World extends BasicGameState {
 	
 	private String lastDmg;
 	
+	
+	//Shape for testing hitboxes
+	private Shape hitBoxTest;
+	
+	
+	
+	
+	
+	
 	@Override
 	public void init(GameContainer container, StateBasedGame game)
 			throws SlickException {
 		
 		player = new Player(playerPos);
 		player.setMovementSpeed(2);
+		player.setMaxHp(200);
+		player.setHp(200);
 		
 		PWIDTH = player.width();
 		PHEIGHT = player.height();
@@ -281,7 +285,7 @@ public class World extends BasicGameState {
 		for(Monster m : currentMap.monsters()){
 			g.drawImage(m.getImage(), m.getXPos(), m.getYPos());
 			if(showEnemyHp){
-				g.drawString(""+m.gethp(), m.getXPos(), m.getYPos()-10);
+				g.drawString(""+m.gethp(), m.getXPos(), m.getYPos()-15);
 			}
 			
 			if(swordCooldown>0) {
@@ -397,11 +401,6 @@ public class World extends BasicGameState {
 		g.setColor(Color.white);
 		//g.drawString(("" + player.getHpPercentage()*100).substring(0,3)+ "%", 80, 323);
 		g.drawString("" + player.gethp()+"/"+player.getMaxHp(), 76, 323);
-		int j = 0;
-		for(Monster m : currentMap.monsters()){
-			g.drawString(""+m.hitpoints, 50, 50 + j);
-			j = j + 10;
-		}
 		
 		
 		
