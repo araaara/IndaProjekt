@@ -17,7 +17,6 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Polygon;
 
-import playernshit.Fireball;
 import playernshit.Projectile;
 import playernshit.Spell;
 
@@ -30,7 +29,7 @@ public class World extends BasicGameState {
 	private Image bars;
 	private Image corpse;
 	
-	//Animations
+	//Animationer
 	private Animation[] facing;
 	private Animation currentAnim;
 	private Animation[] walking;
@@ -66,6 +65,7 @@ public class World extends BasicGameState {
 	private Map map5;
 	private Map currentMap;
 	
+
 	//Player
 	public static Player player;
 	private Position playerPos = new Position(200,200);
@@ -83,6 +83,7 @@ public class World extends BasicGameState {
 	private Weapon currentWeapon;
 	private Armor currentArmor;
 	private Fireball currentSpell;
+	
 	private HashSet<Projectile> shots = new HashSet<Projectile>();
 	
 	private boolean charging = true;
@@ -123,12 +124,12 @@ public class World extends BasicGameState {
 		swordAttack = new Animation[8];
 		strike = new Animation[8];
 		
-		
-		//Facing animations
 		Image[] fDown = {char2};
 		Image[] fRight = {new Image("resources/guy2_fr.png")};
 		Image[] fLeft = {new Image("resources/guy2_fl.png")};
 		Image[] fUp = {new Image("resources/guy2_b.png")};
+		
+		
 		
 		facing[0] = new Animation(fDown,1);
 		facing[1] = new Animation(fDown,1);
@@ -271,7 +272,6 @@ public class World extends BasicGameState {
 		
 		
 		
-		
 		char2 = new Image("resources/char2.png");
 		bars = new Image("resources/bars.png");
 		
@@ -329,7 +329,6 @@ public class World extends BasicGameState {
 			g.drawString(player.getPosition().toString(), 10, 10);
 		}
 		
-		
 		if(swordCooldown>0) {
 		    swordCooldown--;
 		}
@@ -369,6 +368,7 @@ public class World extends BasicGameState {
     	}
     	
     	if(keyA && ATKTYPE == 2 && swordCooldown == 0){ //Range
+    		
     		Image arrow = new Image("resources/arrow.png");
     		sendProjectile(arrow, PROJECTILESPEED, ATKDMG);
     		swordCooldown = ATKSPEED;
@@ -388,11 +388,11 @@ public class World extends BasicGameState {
     		chargeTime++;
     	}
     	
-    	Spell spell = new Fireball();
     	
-    	if(chargeTime == spell.getCharge()) {
-    		Image spellPic = new Image(spell.getImagePath());
-    		sendProjectile(spellPic, spell.getSpeed(), spell.getDamage());
+    	
+    	if(chargeTime == currentSpell.getCharge()) {
+    		Image spellPic = new Image(currentSpell.getImagePath());
+    		sendProjectile(spellPic, currentSpell.getSpeed(), currentSpell.getDamage());
     		chargeTime = 0;
     		swordCooldown = ATKSPEED;
     	}

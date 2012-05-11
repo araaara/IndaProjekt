@@ -37,6 +37,7 @@ public abstract class Creature implements Collidable{
 		pos = new Position(130,100);
 		hitpoints = maxHp;
 		movementSpeed=1;
+		mp=maxMp;
 	}
 	
 	public int gethp(){
