@@ -12,6 +12,7 @@ public class Menu extends BasicGameState {
 	
 	private static final int ID = 1;
 	private static final int WORLDID = 2;
+	private static final int CREDITSID = 3;
 	
 	private boolean keyUp;
 	private boolean keyDown;
@@ -90,6 +91,9 @@ public class Menu extends BasicGameState {
 		if(keySelectOption){
 			if(selectedOption==0){
 				game.enterState(WORLDID);
+			}
+			if(selectedOption==1){
+				game.enterState(CREDITSID);
 			}
 			if(selectedOption==2){
 				
